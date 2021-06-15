@@ -16,4 +16,6 @@ module.exports = {
 };
 
 User.hasOne(Bike);
+
 Bike.belongsTo(User);
+
