@@ -5,10 +5,16 @@ const Bike = db.define("bike", {
   model: {
     type: Sequelize.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   price: {
     type: Sequelize.INTEGER,
     allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   year: {
     type: Sequelize.INTEGER,
@@ -19,6 +25,9 @@ const Bike = db.define("bike", {
   imageURL: {
     type: Sequelize.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
 });
 
