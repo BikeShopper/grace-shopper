@@ -1,18 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { fetchBikes } from '../store/allProducts';
 
-export default class AllProducts extends Component {
+export class AllProducts extends Component {
+  constructor(props) {
+    super(props);
+    // this.state = {
+
+    // }
+  }
+
+  componentDidMount() {
+    console.log('in CDM');
+    this.props.loadBikes();
+  }
+
   render() {
+    const { bikes } = this.props || [];
+    console.log('PROPS===> ', this.props);
     return (
       <div>
         <h1>All Bikes:</h1>
         <div>
-          {bikes ? (
+          {bikes.bikes ? (
             <div>
-              {bikes.map((bike) => (
+              {bikes.bikes.map((bike) => (
                 <div key={bike.id}>
-                  <Link to={`/products/:${product.id}`}>
+                  <Link to={`/bikes/:${bike.id}`}>
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
                   </Link>
@@ -27,3 +42,15 @@ export default class AllProducts extends Component {
     );
   }
 }
+
+const mapState = (state) => {
+  return {
+    bikes: state.bikesReducer,
+  };
+};
+const mapDispatch = (dispatch) => {
+  return {
+    loadBikes: () => dispatch(fetchBikes()),
+  };
+};
+export default connect(mapState, mapDispatch)(AllProducts);
