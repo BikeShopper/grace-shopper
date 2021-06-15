@@ -12,7 +12,6 @@ export class AllProducts extends Component {
   }
 
   componentDidMount() {
-    console.log('in CDM');
     this.props.loadBikes();
   }
 
@@ -22,9 +21,9 @@ export class AllProducts extends Component {
       <div>
         <h1>All Bikes:</h1>
         <div>
-          {bikes.bikes ? (
+          {bikes ? (
             <div>
-              {bikes.bikes.map((bike) => (
+              {bikes.map((bike) => (
                 <div key={bike.id}>
                   <Link to={`/bikes/:${bike.id}`}>
                     <img src={bike.imageURL} />

@@ -22,15 +22,13 @@ export const fetchBikes = () => async (dispatch) => {
 };
 
 //INITIAL STATE
-const initialState = {
-  bikes: [],
-};
+const initialState = [];
 
 // REDUCER
 const bikesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_BIKES:
-      return { ...state, bikes: action.bikes };
+      return action.bikes;
     default:
       return state;
   }
