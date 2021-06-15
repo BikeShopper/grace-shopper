@@ -16,4 +16,4 @@ module.exports = {
 };
 
 User.hasOne(Bike);
-Bike.hasMany(User);
+Bike.belongsTo(User);
