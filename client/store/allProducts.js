@@ -30,7 +30,6 @@ const initialState = {
 const bikesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_BIKES:
-      console.log('In reducer');
       return { ...state, bikes: action.bikes };
     default:
       return state;
