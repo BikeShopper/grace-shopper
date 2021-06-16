@@ -31,4 +31,4 @@ const Bike = db.define("bike", {
   },
 });
 
-module.exports = Bike;
+module.exports = Bike

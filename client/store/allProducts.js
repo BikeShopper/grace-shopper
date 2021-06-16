@@ -13,28 +13,25 @@ export const setBikes = (bikes) => {
 
 //THUNK CREATORS
 export const fetchBikes = () => async (dispatch) => {
-    try {
-        const {data: allBikes} = await axios.get('/api/bikes');
-        dispatch(setBikes(allBikes))
-    } catch (error) {
-        console.error(error);
-    }
+  try {
+    const { data: allBikes } = await axios.get('/api/bikes');
+    dispatch(setBikes(allBikes));
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 //INITIAL STATE
-const initialState = {
-  bikes: [],
-};
+const initialState = [];
 
 // REDUCER
 const bikesReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_BIKES:
-            return {...state, bikes: action.bikes};
-        default:
-            return state;
-    }
-}
-
+  switch (action.type) {
+    case SET_BIKES:
+      return action.bikes;
+    default:
+      return state;
+  }
+};
 
 export default bikesReducer;
