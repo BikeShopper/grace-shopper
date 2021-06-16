@@ -26,7 +26,7 @@ export class AllProducts extends Component {
             <div>
               {bikes.map((bike) => (
                 <div key={bike.id}>
-                  <Link to={`/bikes/:${bike.id}`}>
+                  <Link to={`/bikes/${bike.id}`}>
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
                   </Link>
