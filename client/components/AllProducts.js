@@ -17,6 +17,7 @@ export class AllProducts extends Component {
 
   render() {
     const { bikes } = this.props || [];
+    console.log('props', this.props);
     return (
       <div>
         <h1>All Bikes:</h1>
