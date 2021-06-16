@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchBikes } from '../store/allProducts';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchBikes } from "../store/allProducts";
 
 export class AllProducts extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ export class AllProducts extends Component {
 
   render() {
     const { bikes } = this.props || [];
-    console.log('props', this.props);
+    console.log("props", this.props);
     return (
       <div>
         <h1>All Bikes:</h1>
@@ -26,7 +26,7 @@ export class AllProducts extends Component {
             <div>
               {bikes.map((bike) => (
                 <div key={bike.id}>
-                  <Link to={`/bikes/:${bike.id}`}>
+                  <Link to={`/bikes/${bike.id}`}>
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
                   </Link>
@@ -37,7 +37,7 @@ export class AllProducts extends Component {
                         console.log(`Id of bike ${bike.id} clicked`)
                       }
                     >
-                      ADD TO CART{' '}
+                      ADD TO CART{" "}
                     </button>
                   </div>
                 </div>

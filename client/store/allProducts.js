@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 // ACTIONS TYPE
-const SET_BIKES = 'SET_BIKES';
+const SET_BIKES = "SET_BIKES";
 
 // ACTION CREATORS
 export const setBikes = (bikes) => {
@@ -14,7 +14,7 @@ export const setBikes = (bikes) => {
 //THUNK CREATORS
 export const fetchBikes = () => async (dispatch) => {
   try {
-    const { data: allBikes } = await axios.get('/api/bikes');
+    const { data: allBikes } = await axios.get("/api/bikes");
     dispatch(setBikes(allBikes));
   } catch (error) {
     console.error(error);
