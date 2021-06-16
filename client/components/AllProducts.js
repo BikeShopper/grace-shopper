@@ -6,9 +6,6 @@ import { fetchBikes } from "../store/allProducts";
 export class AllProducts extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-
-    // }
   }
 
   componentDidMount() {
@@ -17,7 +14,6 @@ export class AllProducts extends Component {
 
   render() {
     const { bikes } = this.props || [];
-    console.log("props", this.props);
     return (
       <div>
         <h1>All Bikes:</h1>
@@ -25,7 +21,7 @@ export class AllProducts extends Component {
           {bikes ? (
             <div>
               {bikes.map((bike) => (
-                <div key={bike.id}>
+                <div class="bike-container" key={bike.id}>
                   <Link to={`/bikes/${bike.id}`}>
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
