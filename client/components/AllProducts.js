@@ -30,6 +30,16 @@ export class AllProducts extends Component {
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
                   </Link>
+                  <div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        console.log(`Id of bike ${bike.id} clicked`)
+                      }
+                    >
+                      ADD TO CART{' '}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
