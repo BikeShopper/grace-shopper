@@ -15,7 +15,6 @@ export const setSingleBike = (bike) => {
 export const fetchSingleBike = (id) => {
   return async (dispatch) => {
     const { data } = await Axios.get(`/api/bikes/${id}`);
-    console.log(data);
     dispatch(setSingleBike(data));
   };
 };
