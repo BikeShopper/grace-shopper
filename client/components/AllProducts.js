@@ -2,18 +2,36 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchBikes } from "../store/allProducts";
+import AddToCart from "./AddToCart";
 
 export class AllProducts extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      cart: [],
+      total: 0,
+    }
+    this.UpdateCart = this.UpdateCart.bind(this);
+
   }
 
   componentDidMount() {
     this.props.loadBikes();
   }
 
+  UpdateCart(fullItem) {
+    this.setState((state) => {
+      return {
+        cart: [...state.cart, fullItem.item],
+        total: state.total + (fullItem.item.price * fullItem.counter),
+      };
+    });
+  };
+
   render() {
     const { bikes } = this.props || [];
+
     return (
       <div>
         <h1>All Bikes:</h1>
@@ -26,16 +44,7 @@ export class AllProducts extends Component {
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
                   </Link>
-                  <div>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        console.log(`Id of bike ${bike.id} clicked`)
-                      }
-                    >
-                      ADD TO CART{" "}
-                    </button>
-                  </div>
+                  <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
                 </div>
               ))}
             </div>
