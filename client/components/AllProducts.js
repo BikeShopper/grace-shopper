@@ -7,26 +7,27 @@ import AddToCart from "./AddToCart";
 export class AllProducts extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      cart: [],
-      total: 0,
-    }
     this.UpdateCart = this.UpdateCart.bind(this);
-
   }
 
   componentDidMount() {
+    const { localStorage } = window
     this.props.loadBikes();
   }
 
   UpdateCart(fullItem) {
-    this.setState((state) => {
-      return {
-        cart: [...state.cart, fullItem.item],
-        total: state.total + (fullItem.item.price * fullItem.counter),
-      };
-    });
+    const { localStorage } = window;
+    const cartHistory = JSON.parse(localStorage.getItem('cart')) || [];
+    const totalHistory = JSON.parse(localStorage.getItem('total')) || 0;
+    // Add conditional if localStorage cart includes the current fullItem.
+    if (cartHistory.indexOf(fullItem) >= 0) {
+      const idx = cartHistory.indexOf(fullItem)
+      cartHistory[idx] = fullItem;
+      localStorage.setItem('cart', JSON.stringify(cartHistory));
+    } else {
+      localStorage.setItem('cart', JSON.stringify([...cartHistory, fullItem]));
+    }
+    localStorage.setItem('total', (totalHistory + (fullItem.item.price * fullItem.counter)));
   };
 
   render() {

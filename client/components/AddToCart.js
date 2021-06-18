@@ -24,8 +24,8 @@ export default class AddToCart extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         const { UpdateCart } = prevProps;
-        console.log("Local Cart Btn State", this.state);
         if (this.state !== prevState) {
+            console.log("Local Cart Btn State", this.state);
             UpdateCart(this.state);
         }
     }
