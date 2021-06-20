@@ -3,8 +3,8 @@ const {
   models: { User },
 } = require('../db');
 const { requireToken, isAdmin } = require('./gatekeepingMiddleware');
-module.exports = router;
 
+// GET /api/users
 router.get('/', requireToken, isAdmin, async (req, res, next) => {
   try {
     const users = await User.findAll({
@@ -18,4 +18,7 @@ router.get('/', requireToken, isAdmin, async (req, res, next) => {
     next(err);
   }
 });
+
+module.exports = router;
+
 //protect the PUT route with destructuring SECURITY HOLE! Only destructure the informations we absolutely need
