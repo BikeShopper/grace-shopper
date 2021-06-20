@@ -19,6 +19,17 @@ router.get('/', requireToken, isAdmin, async (req, res, next) => {
   }
 });
 
-module.exports = router;
+//protect the POST/PUT/DELETE routes with destructuring SECURITY HOLE! Only destructure the informations we absolutely need
 
-//protect the PUT route with destructuring SECURITY HOLE! Only destructure the informations we absolutely need
+//DELETE /api/users/:userId
+router.delete('/:userId', requireToken, isAdmin, async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.userId);
+    await user.destroy();
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+module.exports = router;

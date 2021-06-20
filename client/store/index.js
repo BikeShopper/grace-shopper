@@ -6,14 +6,14 @@ import auth from './auth';
 import bikesReducer from './allProducts';
 import singleBikeReducer from './singleProduct';
 import cartReducer from './cart';
-import adminReducer from './adminStore';
+import adminUserReducer from './adminUserStore';
 
 const reducer = combineReducers({
   auth,
   bikesReducer,
   singleBikeReducer,
   cartReducer,
-  adminReducer,
+  adminUserReducer,
 });
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({ collapsed: true }))

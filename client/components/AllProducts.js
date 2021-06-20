@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchBikes } from '../store/allProducts';
 import AddToCart from './AddToCart';
+import { deleteSingleBike } from '../store/allProducts';
 
 export class AllProducts extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export class AllProducts extends Component {
       total: 0,
     };
     this.UpdateCart = this.UpdateCart.bind(this);
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   componentDidMount() {
@@ -28,11 +30,16 @@ export class AllProducts extends Component {
     });
   }
 
+  deleteButton(event) {
+    this.props.deleteBike(event.target.value);
+  }
+
   render() {
     const { bikes, isAdmin } = this.props || [];
     return (
       <div>
         <h1>All Bikes:</h1>
+        {isAdmin && <button>Add New Bike</button>}
         <div>
           {bikes ? (
             <div>
@@ -45,9 +52,14 @@ export class AllProducts extends Component {
                   <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
                   {isAdmin && (
                     <div>
-                      <button>Add</button>
                       <button>Edit</button>
-                      <button>Delete</button>
+                      <button
+                        value={bike.id}
+                        type="button"
+                        onClick={this.deleteButton}
+                      >
+                        Delete
+                      </button>
                     </div>
                   )}
                 </div>
@@ -70,6 +82,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadBikes: () => dispatch(fetchBikes()),
+    deleteBike: (id) => dispatch(deleteSingleBike(id)),
   };
 };
 export default connect(mapState, mapDispatch)(AllProducts);
