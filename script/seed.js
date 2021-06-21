@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Bike, UserCart },
+  models: { User, Bike, Cart, CartItems },
 } = require("../server/db");
 
 /**
@@ -104,14 +104,29 @@ async function seed() {
     },
   ];
 
-  const userCartArray = [
+  const userCarts = [
     {
-      cartItems: [1, 2, 3],
+      fullfilled: false,
       userId: 1,
     },
     {
-      cartItems: [2, 3],
+      fullfilled: false,
       userId: 2,
+    },
+  ];
+
+  const userCartArray = [
+    {
+      quantity: 1,
+      price: 4582,
+    },
+    {
+      quantity: 1,
+      price: 3192,
+    },
+    {
+      quantity: 2,
+      price: 3192,
     },
   ];
 
@@ -121,10 +136,12 @@ async function seed() {
   // Creating Bikes
   const bikes = await Promise.all(bikesArray.map((bike) => Bike.create(bike)));
 
-  // Creating User Carts
-  const userCart = await Promise.all(
-    userCartArray.map((cart) => UserCart.create(cart))
+  // Creating Carts
+  const userCartsData = await Promise.all(
+    userCarts.map((cart) => Cart.create(cart))
   );
+
+  
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded ${bikes.length} bikes`);
@@ -132,6 +149,7 @@ async function seed() {
   return {
     users,
     bikes,
+    userCartsData,
   };
 }
 
