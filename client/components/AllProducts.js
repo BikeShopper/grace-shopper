@@ -7,6 +7,7 @@ import AddToCart from "./AddToCart";
 export class AllProducts extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       cart: [],
       total: 0,
