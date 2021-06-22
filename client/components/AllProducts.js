@@ -1,8 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchBikes } from "../store/allProducts";
-import AddToCart from "./AddToCart";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchBikes } from '../store/allProducts';
+import AddToCart from './AddToCart';
+import { deleteSingleBike } from '../store/allProducts';
+import { AdminEditBike } from './AdminEditBike';
 
 export class AllProducts extends Component {
   constructor(props) {
@@ -11,9 +13,9 @@ export class AllProducts extends Component {
     this.state = {
       cart: [],
       total: 0,
-    }
+    };
     this.UpdateCart = this.UpdateCart.bind(this);
-
+    this.deleteButton = this.deleteButton.bind(this);
   }
 
   componentDidMount() {
@@ -24,17 +26,25 @@ export class AllProducts extends Component {
     this.setState((state) => {
       return {
         cart: [...state.cart, fullItem.item],
-        total: state.total + (fullItem.item.price * fullItem.counter),
+        total: state.total + fullItem.item.price * fullItem.counter,
       };
     });
-  };
+  }
+
+  deleteButton(event) {
+    this.props.deleteBike(event.target.value);
+  }
 
   render() {
-    const { bikes } = this.props || [];
-
+    const { bikes, isAdmin } = this.props || [];
+    console.log(this.props);
     return (
       <div>
         <h1>All Bikes:</h1>
+        {isAdmin && 
+        < Link to={'/add'}>
+        <button>Add New Bike</button>
+        </Link>}
         <div>
           {bikes ? (
             <div>
@@ -45,6 +55,20 @@ export class AllProducts extends Component {
                     <h3>{bike.model}</h3>
                   </Link>
                   <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
+                  {isAdmin && (
+                    <div>
+                      <Link to={`/bikes/${bike.id}/edit`}>
+                        <button>Edit</button>
+                      </Link>
+                      <button
+                        value={bike.id}
+                        type="button"
+                        onClick={this.deleteButton}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -65,6 +89,7 @@ const mapState = (state) => {
 const mapDispatch = (dispatch) => {
   return {
     loadBikes: () => dispatch(fetchBikes()),
+    deleteBike: (id) => dispatch(deleteSingleBike(id)),
   };
 };
 export default connect(mapState, mapDispatch)(AllProducts);
