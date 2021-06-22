@@ -14,7 +14,10 @@ const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
 app.use(morgan('dev'));
 
 // body parsing middleware
-app.use(express.json());
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 
 // auth and api routes
 app.use('/auth', require('./auth'));
