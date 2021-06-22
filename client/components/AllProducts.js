@@ -10,41 +10,74 @@ export class AllProducts extends Component {
     this.state = {
       cart: [],
       total: 0,
-    }
+      itemQty: 0
+    };
     this.UpdateCart = this.UpdateCart.bind(this);
-  }
+  };
 
   componentDidMount() {
     this.props.loadBikes();
+    if (!localStorage.cart) {
+      localStorage.setItem('cart', JSON.stringify([]));
+    }
   }
 
-  UpdateCart(fullItem) {
-    this.setState((state) => {
-      return {
-        cart: [...state.cart, fullItem.item],
-        total: state.total + (fullItem.item.price * fullItem.counter),
-      };
-    });
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state !== prevState) {
+      const { cart, total, itemQty } = this.state
+      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('total', JSON.stringify(total));
+      localStorage.setItem('itemQty', JSON.stringify(itemQty));
+    }
+  }
+
+  UpdateCart(cartItem, prevItem) {
+    this.setState(state => {
+      const itemIdx = state.cart.indexOf(prevItem);
+      if (itemIdx >= 0) {
+        const { cart } = this.state;
+        cart[itemIdx] = cartItem;
+        return {
+          cart: cart,
+          total: state.total + (cartItem.item.price * cartItem.qty),
+          itemQty: state.itemQty + 1,
+        }
+      } else {
+          return { 
+            cart: [...state.cart, cartItem],
+            total: state.total + (cartItem.item.price * cartItem.qty),
+            itemQty: state.itemQty + 1,
+          };
+        }
+    })
   };
 
   render() {
     const { bikes } = this.props || [];
-    console.log("Local Cart State", this.state);
+
     return (
       <div>
         <h1>All Bikes:</h1>
         <div>
           {bikes ? (
             <div>
-              {bikes.map((bike) => (
-                <div key={bike.id}>
-                  <Link to={`/bikes/${bike.id}`}>
-                    <img src={bike.imageURL} />
-                    <h3>{bike.model}</h3>
-                  </Link>
-                  <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
-                </div>
-              ))}
+              {bikes.map((bike) => {
+                const cartItem = {
+                  id: bike.id,
+                  model: bike.model,
+                  image: bike.imageURL,
+                  price: bike.price,
+                }
+                return (
+                  <div className="bike-container" key={bike.id}>
+                    <Link to={`/bikes/${bike.id}`}>
+                      <img src={bike.imageURL} />
+                      <h3>{bike.model}</h3>
+                    </Link>
+                    <AddToCart bike={cartItem} UpdateCart={this.UpdateCart} />
+                  </div>
+                )
+                })}
             </div>
           ) : (
             <div>There are no bikes for sale yet</div>

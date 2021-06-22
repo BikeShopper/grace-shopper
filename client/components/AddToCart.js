@@ -7,7 +7,7 @@ export default class AddToCart extends Component {
         super();
         this.state = {
             item: {},
-            counter: 0,
+            qty: 0,
         }
         this.AddToCart = this.AddToCart.bind(this);
     }
@@ -17,16 +17,16 @@ export default class AddToCart extends Component {
         this.setState((state) => {
             return {
                 item: bike,
-                counter: state.counter + 1,
+                qty: state.qty + 1,
             };
         });
     }
 
     componentDidUpdate(prevProps, prevState) {
         const { UpdateCart } = prevProps;
-        console.log("Local Cart Btn State", this.state);
         if (this.state !== prevState) {
-            UpdateCart(this.state);
+            // Pass the prevState for comparison in the Cart.
+            UpdateCart(this.state, prevState);
         }
     }
 
