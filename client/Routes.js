@@ -8,6 +8,8 @@ import AllProducts from './components/AllProducts';
 import SingleProduct from './components/SingleProduct';
 import Cart from './components/Cart';
 import Admin from './components/Admin';
+import AdminEditBike from './components/AdminEditBike';
+import AdminAddNewBike from './components/AdminAddNewBike';
 
 /**
  * COMPONENT
@@ -23,19 +25,45 @@ class Routes extends Component {
       <div>
         {
           <Switch>
+            {/* {isAdmin ? (
+              <Switch> */}
+            <Route
+              exact
+              path="/admin"
+              render={() => <Admin isAdmin={isAdmin} />}
+            />
+            {/* // </Switch>
+            // ) : (
+            //   'Restricted Access'
+            // )} */}
             <Route path="/home" component={Home} />
             <Route path="/" exact component={Login} />
             <Route exact path="/login" exact component={Login} />
             <Route exact path="/signup" exact component={Signup} />
             <Route
               exact
+              path="/add"
+              render={(routeProps) => (
+                <AdminAddNewBike isAdmin={isAdmin} {...routeProps} />
+              )}
+            />
+            <Route
+              exact
               path="/bikes"
-              render={() => <AllProducts isAdmin={isAdmin} />}
+              render={(routeProps) => (
+                <AllProducts isAdmin={isAdmin} {...routeProps} />
+              )}
+            />
+            <Route
+              exact
+              path="/bikes/:bikeId/edit"
+              render={(routeProps) => (
+                <AdminEditBike isAdmin={isAdmin} {...routeProps} />
+              )}
             />
             <Route exact path="/bikes/:bikeId" component={SingleProduct} />
             {/*It may be necessary to add the userId to the cart Route*/}
             <Route path="/cart" component={Cart} />
-            <Route exact path="/admin" component={Admin} />
           </Switch>
         }
       </div>

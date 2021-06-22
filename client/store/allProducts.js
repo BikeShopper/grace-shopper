@@ -3,6 +3,7 @@ import axios from 'axios';
 // ACTIONS TYPE
 const SET_BIKES = 'SET_BIKES';
 const DELETE_BIKE = 'DELETE_BIKE';
+const CREATE_NEW_BIKE = 'CREATE_NEW_BIKE';
 
 // ACTION CREATORS
 export const setBikes = (bikes) => {

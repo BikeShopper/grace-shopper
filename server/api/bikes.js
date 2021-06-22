@@ -33,4 +33,15 @@ router.delete('/:bikeId', requireToken, isAdmin, async (req, res, next) => {
   }
 });
 
+//PUT /api/bikes/:bikeId
+router.put('/:bikeId', async (req, res, next) => {
+  try {
+    const bikeUpdate = await Bike.findByPk(req.params.bikeId);
+    const updatedBike = await bikeUpdate.update(req.body);
+    res.send(updatedBike);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

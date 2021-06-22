@@ -28,7 +28,7 @@ const Bike = db.define('bike', {
     validate: {
       notEmpty: true,
     },
-    defaultValue: './public/images/default_bike.png',
+    defaultValue: './images/default_bike.png',
   },
 });
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchUsers, deleteSingleUser } from '../store/adminUserStore';
+import ErrorPage from './ErrorPage';
 
 export class Admin extends Component {
   constructor(props) {
@@ -16,8 +17,8 @@ export class Admin extends Component {
   }
 
   render() {
-    const { users } = this.props || [];
-    return (
+    const { users, isAdmin } = this.props || [];
+    return isAdmin ? (
       <div>
         ADMIN PAGE:
         <div>
@@ -37,6 +38,8 @@ export class Admin extends Component {
           ))}
         </div>
       </div>
+    ) : (
+      <ErrorPage />
     );
   }
 }

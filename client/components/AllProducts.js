@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { fetchBikes } from '../store/allProducts';
 import AddToCart from './AddToCart';
 import { deleteSingleBike } from '../store/allProducts';
+import { AdminEditBike } from './AdminEditBike';
 
 export class AllProducts extends Component {
   constructor(props) {
@@ -36,10 +37,14 @@ export class AllProducts extends Component {
 
   render() {
     const { bikes, isAdmin } = this.props || [];
+    console.log(this.props);
     return (
       <div>
         <h1>All Bikes:</h1>
-        {isAdmin && <button>Add New Bike</button>}
+        {isAdmin && 
+        < Link to={'/add'}>
+        <button>Add New Bike</button>
+        </Link>}
         <div>
           {bikes ? (
             <div>
@@ -52,7 +57,9 @@ export class AllProducts extends Component {
                   <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
                   {isAdmin && (
                     <div>
-                      <button>Edit</button>
+                      <Link to={`/bikes/${bike.id}/edit`}>
+                        <button>Edit</button>
+                      </Link>
                       <button
                         value={bike.id}
                         type="button"
