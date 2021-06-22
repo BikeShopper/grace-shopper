@@ -16,8 +16,8 @@ export default class AddToCart extends Component {
         // Set data to localState, individual for each item.
         this.setState((state) => {
             return {
-                item: bike,
-                qty: state.qty + 1,
+                bike,
+                quantity: state.qty + 1,
             };
         });
     }

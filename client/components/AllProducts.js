@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchBikes } from "../store/allProducts";
-import { fetchCart } from "../store/cart";
+import { fetchCart, addingToCart, updatingCart } from "../store/cart";
 import AddToCart from "./AddToCart";
 
 class AllProducts extends Component {
@@ -22,7 +22,6 @@ class AllProducts extends Component {
     if (!localStorage.cart) {
       localStorage.setItem('cart', JSON.stringify([]));
     }
-    console.log(this.props.userId);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -32,13 +31,38 @@ class AllProducts extends Component {
       localStorage.setItem('total', JSON.stringify(total));
       localStorage.setItem('itemQty', JSON.stringify(itemQty));
     }
-    if (this.props !== prevProps && this.props.userId) {
+    if (this.props !== prevProps && this.props.userId && this.props.cart.length === 0) {
       const { userId, loadCart } = this.props;
-      //loadCart(userId);
+      loadCart(userId);
     }
   }
 
   UpdateCart(cartItem, prevItem) {
+    const { cart, addToCart, updateCart, userId } = this.props;
+    const [cartId, cartItems] = cart;
+    console.log("cart Content", cartId, cartItems);
+    const storeItemIdx = cartItems.indexOf(prevItem);
+    // Check if the item is already in the cart.
+    // If it is, perform an update to the cart
+    if (storeItemIdx >= 0) {
+      // We need to pass down the userId, bikeId and qty
+      // We receive the itemId and the qty in an obj
+      const item = {
+        bikeId: cartItem.bike.id,
+        quantity: cartItem.quantity,
+      };
+      updateCart(userId, item);
+    } else {
+      // Otherwise, add it to the userCart.
+      // It takes a quantity and a price
+      const item = {
+        bikeId: cartItem.bike.id,
+        cartId,
+        quantity: cartItem.quantity,
+        price: cartItem.bike.price,
+      }
+      addToCart(item)
+    }
     this.setState(state => {
       const itemIdx = state.cart.indexOf(prevItem);
       if (itemIdx >= 0) {
@@ -98,13 +122,16 @@ class AllProducts extends Component {
 const mapState = (state) => {
   return {
     bikes: state.bikesReducer,
-    cart: state.cartReducer
+    cart: state.cartReducer,
+    userId: state.auth.id,
   };
 };
 const mapDispatch = (dispatch) => {
   return {
     loadBikes: () => dispatch(fetchBikes()),
     loadCart: (id) => dispatch(fetchCart(id)),
+    addToCart: (item) => dispatch(addingToCart(item)),
+    updateCart: (id, item) => dispatch(updatingCart(id, item)),
   };
 };
 export default connect(mapState, mapDispatch)(AllProducts);
