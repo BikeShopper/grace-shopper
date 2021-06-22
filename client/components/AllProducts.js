@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchBikes } from "../store/allProducts";
+import { fetchCart } from "../store/cart";
 import AddToCart from "./AddToCart";
 
-export class AllProducts extends Component {
+class AllProducts extends Component {
   constructor(props) {
     super(props);
 
@@ -21,6 +22,7 @@ export class AllProducts extends Component {
     if (!localStorage.cart) {
       localStorage.setItem('cart', JSON.stringify([]));
     }
+    console.log(this.props.userId);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -29,6 +31,10 @@ export class AllProducts extends Component {
       localStorage.setItem('cart', JSON.stringify(cart));
       localStorage.setItem('total', JSON.stringify(total));
       localStorage.setItem('itemQty', JSON.stringify(itemQty));
+    }
+    if (this.props !== prevProps && this.props.userId) {
+      const { userId, loadCart } = this.props;
+      //loadCart(userId);
     }
   }
 
@@ -92,11 +98,13 @@ export class AllProducts extends Component {
 const mapState = (state) => {
   return {
     bikes: state.bikesReducer,
+    cart: state.cartReducer
   };
 };
 const mapDispatch = (dispatch) => {
   return {
     loadBikes: () => dispatch(fetchBikes()),
+    loadCart: (id) => dispatch(fetchCart(id)),
   };
 };
 export default connect(mapState, mapDispatch)(AllProducts);

@@ -1,17 +1,20 @@
+import axios from "axios";
+
 // ACTION TYPES
 const SET_CART =  "SET_CART";
 
 // ACTION CREATORS
-export const setCart = bikes => ({
+export const setCart = cart => ({
     type: SET_CART,
-    bikes,
+    cart,
 });
 
 // THUNK CREATORS
-export const fetchCart = ids => async dispatch => {
+export const fetchCart = id => async dispatch => {
     try {
-        // Pending API route
-        console.log("Filter bikes FindAll with the following ids", ids);
+        const { data: cart } = await axios.get(`/api/userCart/${id}`);
+        console.log("Data from API call", cart)
+        dispatch(setCart(cart));
     } catch (err) {
         console.log(err.stack);
     }
@@ -24,7 +27,7 @@ const initialState = [];
 const cartReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_CART:
-            return action.bikes;
+            return action.cart;
         default:
             return state;
     };
