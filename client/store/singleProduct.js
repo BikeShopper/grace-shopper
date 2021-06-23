@@ -46,6 +46,7 @@ export default function singleBikeReducer(state = initialState, action) {
     case SET_SINGLE_BIKE:
       return action.bike;
     case UPDATE_BIKE_INFO:
+      console.log('action bikde', action.bike);
       return action.bike;
     default:
       return state;

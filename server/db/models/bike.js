@@ -24,7 +24,11 @@ const Bike = db.define('bike', {
   },
   imageURL: {
     type: Sequelize.STRING,
-    defaultValue: '/images/defaultbike.jpg',
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+    defaultValue: './images/default_bike.png',
   },
 });
 

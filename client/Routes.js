@@ -25,11 +25,17 @@ class Routes extends Component {
       <div>
         {
           <Switch>
+            {/* {isAdmin ? (
+              <Switch> */}
             <Route
               exact
               path="/admin"
               render={() => <Admin isAdmin={isAdmin} />}
             />
+            {/* // </Switch>
+            // ) : (
+            //   'Restricted Access'
+            // )} */}
             <Route path="/home" component={Home} />
             <Route path="/" exact component={Login} />
             <Route exact path="/login" exact component={Login} />
