@@ -153,4 +153,26 @@ router.put("/checkout/:userId", async (req, res, next) => {
   }
 });
 
+// GET /api/userCart/bikeQty/:userId
+router.get("/bikeQty/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    let cartId = await Cart.findOne({
+      where: {
+        userId,
+        fulfilled: false,
+      },
+    });
+    const bikeQty = await CartItems.findAll({
+      where: {
+        cartId: cartId.id,
+      },
+    });
+    res.json(bikeQty);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

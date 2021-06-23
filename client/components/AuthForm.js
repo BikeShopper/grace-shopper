@@ -64,6 +64,7 @@ const mapDispatch = (dispatch) => {
       const password = evt.target.password.value;
       dispatch(authenticate(username, password, formName));
     },
+    
   };
 };
 
