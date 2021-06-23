@@ -34,7 +34,7 @@ class AllProducts extends Component {
       localStorage.setItem('total', JSON.stringify(total));
       localStorage.setItem('itemQty', JSON.stringify(itemQty));
     }
-    if (this.props !== prevProps && this.props.userId && this.props.cart.length === 0) {
+    if (this.props.cart.length !== prevProps.cart.length && this.props.userId) {
       const { userId, loadCart } = this.props;
       loadCart(userId);
     }
@@ -42,30 +42,30 @@ class AllProducts extends Component {
 
   UpdateCart(cartItem, prevItem) {
     const { cart, addToCart, updateCart, userId } = this.props;
-    const [cartId, cartItems] = cart;
-    const cartHasItem = cartItems.filter(item => 
-      item.id === cartItem.bike.id 
-      ? item
-      : null);
-    // Check if the item is already in the cart.
-    // If it is, perform an update to the cart
-    if (cartHasItem.length > 0) {
+    const hasItem = cart.some(item => item.id === cartItem.bike.id);
+    console.log("hasItem var", hasItem)
+    
+    if (hasItem) {
+      // Check if the item is already in the cart.
+      // If it is, perform an update to the cart
       // We need to pass down the userId, bikeId and qty
       // We receive the itemId and the qty in an obj
       const item = {
         bikeId: cartItem.bike.id,
         quantity: cartItem.quantity,
       };
+      console.log("UPDATE")
       updateCart(userId, item);
     } else {
       // Otherwise, add it to the userCart.
       // It takes a quantity and a price
       const item = {
         bikeId: cartItem.bike.id,
-        cartId,
         quantity: cartItem.quantity,
         price: cartItem.bike.price,
+        userId
       }
+      console.log("ADD")
       addToCart(item)
     }
     this.setState(state => {

@@ -35,6 +35,7 @@ export const fetchCart = id => async dispatch => {
 export const addingToCart = (item) => async dispatch => {
     try {
         const { data: createdItem } = await axios.post("/api/userCart", item);
+        console.log("AXIOS POST return", createdItem)
         dispatch(addToCart(createdItem));
     } catch (err) {
         console.log(err.stack)
@@ -45,6 +46,7 @@ export const updatingCart = (id, item) => async dispatch => {
     try {
         const { data: updatedItem } = await axios.put(`/api/userCart/${id}`, item);
         const bikeId = updatedItem[1][0].bikeId;
+        console.log("AXIOS PUT return", updatedItem)
         //dispatch(updateCart(updatedItem));
     } catch (err) {
         console.log(err.stack)
@@ -62,12 +64,7 @@ const cartReducer = (state = initialState, action) => {
         case SET_CART:
             return action.cart;
         case ADD_TO_CART:
-            const updatedItems = state.filter(item => 
-                item.id !== action.item.id 
-                ? item.id
-                : action.item.id
-                );
-            return updatedItems;
+            return [...state, action.item];
         default:
             return state;
     };
