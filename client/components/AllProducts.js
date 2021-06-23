@@ -40,11 +40,13 @@ class AllProducts extends Component {
   UpdateCart(cartItem, prevItem) {
     const { cart, addToCart, updateCart, userId } = this.props;
     const [cartId, cartItems] = cart;
-    console.log("cart Content", cartId, cartItems);
-    const storeItemIdx = cartItems.indexOf(prevItem);
+    const cartHasItem = cartItems.filter(item => 
+      item.id === cartItem.bike.id 
+      ? item
+      : null);
     // Check if the item is already in the cart.
     // If it is, perform an update to the cart
-    if (storeItemIdx >= 0) {
+    if (cartHasItem.length > 0) {
       // We need to pass down the userId, bikeId and qty
       // We receive the itemId and the qty in an obj
       const item = {
@@ -93,19 +95,13 @@ class AllProducts extends Component {
           {bikes ? (
             <div>
               {bikes.map((bike) => {
-                const cartItem = {
-                  id: bike.id,
-                  model: bike.model,
-                  image: bike.imageURL,
-                  price: bike.price,
-                }
                 return (
                   <div className="bike-container" key={bike.id}>
                     <Link to={`/bikes/${bike.id}`}>
                       <img src={bike.imageURL} />
                       <h3>{bike.model}</h3>
                     </Link>
-                    <AddToCart bike={cartItem} UpdateCart={this.UpdateCart} />
+                    <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
                   </div>
                 )
                 })}

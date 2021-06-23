@@ -42,8 +42,8 @@ export const addingToCart = (item) => async dispatch => {
 
 export const updatingCart = (id, item) => async dispatch => {
     try {
-        const { data: updatedItem } = await axios.post(`/api/userCart/${id}`, item);
-        console.log("Updating cart", updatedItem)
+        const { data: updatedItem } = await axios.put(`/api/userCart/${id}`, item);
+        const bikeId = updatedItem[1][0].bikeId;
         //dispatch(updateCart(updatedItem));
     } catch (err) {
         console.log(err.stack)
