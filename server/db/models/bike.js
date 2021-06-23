@@ -1,7 +1,7 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require('sequelize');
+const db = require('../db');
 
-const Bike = db.define("bike", {
+const Bike = db.define('bike', {
   model: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -24,11 +24,7 @@ const Bike = db.define("bike", {
   },
   imageURL: {
     type: Sequelize.STRING,
-    allowNull: false,
-    defaultValue: "./public/images/default_bike.png",
-    validate: {
-      notEmpty: true,
-    },
+    defaultValue: '/images/defaultbike.jpg',
   },
 });
 
