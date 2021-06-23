@@ -1,8 +1,10 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const axios = require("axios");
+
+const Sequelize = require('sequelize');
+const db = require('../db');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const axios = require('axios');
+
 
 const SALT_ROUNDS = 5;
 
@@ -14,6 +16,14 @@ const User = db.define("user", {
   },
   password: {
     type: Sequelize.STRING,
+  },
+
+  githubId: {
+    type: Sequelize.INTEGER,
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
   },
 });
 
@@ -37,7 +47,9 @@ User.prototype.generateToken = function () {
 User.authenticate = async function ({ username, password }) {
   const user = await this.findOne({ where: { username } });
   if (!user || !(await user.correctPassword(password))) {
+
     const error = Error("Incorrect username/password");
+
     error.status = 401;
     throw error;
   }
@@ -49,11 +61,13 @@ User.findByToken = async function (token) {
     const { id } = await jwt.verify(token, process.env.JWT);
     const user = User.findByPk(id);
     if (!user) {
-      throw "nooo";
+
+      throw 'nooo';
     }
     return user;
   } catch (ex) {
-    const error = Error("bad token");
+    const error = Error('bad token');
+
     error.status = 401;
     throw error;
   }

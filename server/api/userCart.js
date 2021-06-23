@@ -88,6 +88,7 @@ router.put("/:userId", async (req, res, next) => {
           bikeId,
           cartId,
         },
+        returning: true,
       }
     );
     res.json(updateBikeQuantity);

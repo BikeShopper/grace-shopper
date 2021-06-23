@@ -1,20 +1,20 @@
-const Sequelize = require("sequelize");
-const db = require("../db");
+const Sequelize = require('sequelize');
+const db = require('../db');
 
-const Bike = db.define("bike", {
+const Bike = db.define('bike', {
   model: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true
-    }
+      notEmpty: true,
+    },
   },
   price: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
-      notEmpty: true
-    }
+      notEmpty: true,
+    },
   },
   year: {
     type: Sequelize.INTEGER,
@@ -24,11 +24,8 @@ const Bike = db.define("bike", {
   },
   imageURL: {
     type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
+    defaultValue: '/images/defaultbike.jpg',
   },
 });
 
-module.exports = Bike
+module.exports = Bike;
