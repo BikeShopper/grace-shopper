@@ -22,6 +22,16 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+// POST /api/bikes
+router.post('/', async (req, res, next) => {
+  try {
+    const bike = await Bike.create(req.body);
+    res.status(201).send(bike);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //DELETE /api/bikes/:bikeId
 router.delete('/:bikeId', requireToken, isAdmin, async (req, res, next) => {
   try {
