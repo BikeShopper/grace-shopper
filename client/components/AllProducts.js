@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchBikes } from '../store/allProducts';
 import AddToCart from './AddToCart';
+import { fetchCart, addingToCart, updatingCart } from "../store/cart";
 import { deleteSingleBike } from '../store/allProducts';
 import { AdminEditBike } from './AdminEditBike';
 
-export class AllProducts extends Component {
+class AllProducts extends Component {
   constructor(props) {
     super(props);
 
@@ -20,16 +21,71 @@ export class AllProducts extends Component {
 
   componentDidMount() {
     this.props.loadBikes();
+    if (!localStorage.cart) {
+      localStorage.setItem('cart', JSON.stringify([]));
+    }
   }
 
-  UpdateCart(fullItem) {
-    this.setState((state) => {
-      return {
-        cart: [...state.cart, fullItem.item],
-        total: state.total + fullItem.item.price * fullItem.counter,
-      };
-    });
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state !== prevState) {
+      const { cart, total, itemQty } = this.state
+      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('total', JSON.stringify(total));
+      localStorage.setItem('itemQty', JSON.stringify(itemQty));
+    }
+    if (this.props !== prevProps && this.props.userId && this.props.cart.length === 0) {
+      const { userId, loadCart } = this.props;
+      loadCart(userId);
+    }
   }
+
+  UpdateCart(cartItem, prevItem) {
+    const { cart, addToCart, updateCart, userId } = this.props;
+    const [cartId, cartItems] = cart;
+    const cartHasItem = cartItems.filter(item => 
+      item.id === cartItem.bike.id 
+      ? item
+      : null);
+    // Check if the item is already in the cart.
+    // If it is, perform an update to the cart
+    if (cartHasItem.length > 0) {
+      // We need to pass down the userId, bikeId and qty
+      // We receive the itemId and the qty in an obj
+      const item = {
+        bikeId: cartItem.bike.id,
+        quantity: cartItem.quantity,
+      };
+      updateCart(userId, item);
+    } else {
+      // Otherwise, add it to the userCart.
+      // It takes a quantity and a price
+      const item = {
+        bikeId: cartItem.bike.id,
+        cartId,
+        quantity: cartItem.quantity,
+        price: cartItem.bike.price,
+      }
+      addToCart(item)
+    }
+    this.setState(state => {
+      const itemIdx = state.cart.indexOf(prevItem);
+      if (itemIdx >= 0) {
+        const { cart } = this.state;
+        cart[itemIdx] = cartItem;
+        return {
+          cart: cart,
+          total: state.total + (cartItem.item.price * cartItem.qty),
+          itemQty: state.itemQty + 1,
+        }
+      } else {
+          return { 
+            cart: [...state.cart, cartItem],
+            total: state.total + (cartItem.item.price * cartItem.qty),
+            itemQty: state.itemQty + 1,
+          };
+        }
+    })
+  };
 
   deleteButton(event) {
     this.props.deleteBike(event.target.value);
@@ -84,11 +140,16 @@ export class AllProducts extends Component {
 const mapState = (state) => {
   return {
     bikes: state.bikesReducer,
+    cart: state.cartReducer,
+    userId: state.auth.id,
   };
 };
 const mapDispatch = (dispatch) => {
   return {
     loadBikes: () => dispatch(fetchBikes()),
+    loadCart: (id) => dispatch(fetchCart(id)),
+    addToCart: (item) => dispatch(addingToCart(item)),
+    updateCart: (id, item) => dispatch(updatingCart(id, item)),
     deleteBike: (id) => dispatch(deleteSingleBike(id)),
   };
 };
