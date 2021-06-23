@@ -2,27 +2,38 @@ const router = require("express").Router();
 const User = require("../db/models/user");
 const CartItems = require("../db/models/cartItems");
 const Bike = require("../db/models/bike");
+const Cart = require("../db/models/cart");
 
 //GET /api/userCart/:id
 // Retrieve all cart Items for user: userId, check for CartId
 router.get("/:id", async (req, res, next) => {
   try {
     const userId = req.params.id;
-    const user = await User.findByPk(userId);
-    let userCartId = await user.getCarts();
+
+    // Find/Create cartId
+    let userCartId = await Cart.findOrCreate({
+      where: {
+        userId,
+        fulfilled: false,
+      },
+    });
     userCartId = userCartId[0].id;
+
+    // Find all cartId items
     const cartItems = await CartItems.findAll({
       where: {
         cartId: userCartId,
       },
     });
+
+    // Retrieve bike info
     const bikeIds = cartItems.map((bike) => bike.bikeId);
     const bikes = await Bike.findAll({
       where: {
         id: bikeIds,
       },
     });
-    res.json([userCartId, bikes]);
+    res.json(bikes);
   } catch (error) {
     next(error);
   }
@@ -31,7 +42,23 @@ router.get("/:id", async (req, res, next) => {
 // POST /api/userCart
 router.post("/", async (req, res, next) => {
   try {
-    const cartItem = await CartItems.create(req.body);
+    const { bikeId, quantity, price, userId } = req.body;
+
+    let cartId = await Cart.findOrCreate({
+      where: {
+        userId,
+        fulfilled: false,
+      },
+    });
+    cartId = cartId[0].id;
+
+    const newCartItem = {
+      bikeId,
+      quantity,
+      cartId,
+      price,
+    };
+    const cartItem = await CartItems.create(newCartItem);
     res.json(cartItem);
   } catch (error) {
     next(error);
@@ -43,9 +70,14 @@ router.put("/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { bikeId, quantity } = req.body;
-    const user = await User.findByPk(userId);
-    let userCartId = await user.getCarts();
-    userCartId = userCartId[0].id;
+
+    let cartId = await Cart.findAll({
+      where: {
+        userId,
+        fulfilled: false,
+      },
+    });
+    cartId = cartId[0].id;
 
     const updateBikeQuantity = await CartItems.update(
       {
@@ -54,7 +86,7 @@ router.put("/:userId", async (req, res, next) => {
       {
         where: {
           bikeId,
-          cartId: userCartId,
+          cartId,
         },
       }
     );
@@ -69,8 +101,13 @@ router.delete("/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { bikeId } = req.body;
-    const user = await User.findByPk(userId);
-    let cartId = await user.getCarts();
+
+    let cartId = await Cart.findAll({
+      where: {
+        userId,
+        fulfilled: false,
+      },
+    });
     cartId = cartId[0].id;
 
     const deleteCartItem = await CartItems.destroy({
@@ -81,6 +118,35 @@ router.delete("/:userId", async (req, res, next) => {
     });
 
     res.json(deleteCartItem);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PUT /api/userCart/checkout/:userId
+router.put("/checkout/:userId", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    let cartId = await Cart.findAll({
+      where: {
+        userId,
+        fulfilled: false,
+      },
+    });
+    cartId = cartId[0].id;
+
+    const updateFulfilled = await Cart.update(
+      {
+        fulfilled: true,
+      },
+      {
+        where: {
+          id: cartId,
+        },
+      }
+    );
+    res.json(updateFulfilled);
   } catch (error) {
     next(error);
   }

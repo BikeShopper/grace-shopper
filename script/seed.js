@@ -106,11 +106,15 @@ async function seed() {
 
   const userCarts = [
     {
-      fullfilled: false,
+      fulfilled: false,
       userId: 1,
     },
     {
-      fullfilled: false,
+      fulfilled: true,
+      userId: 2,
+    },
+    {
+      fulfilled: false,
       userId: 2,
     },
   ];
@@ -140,8 +144,6 @@ async function seed() {
   const userCartsData = await Promise.all(
     userCarts.map((cart) => Cart.create(cart))
   );
-
-  
 
   console.log(`seeded ${users.length} users`);
   console.log(`seeded ${bikes.length} bikes`);
