@@ -37,14 +37,14 @@ export class AllProducts extends Component {
 
   render() {
     const { bikes, isAdmin } = this.props || [];
-    console.log(this.props);
     return (
       <div>
         <h1>All Bikes:</h1>
-        {isAdmin && 
-        < Link to={'/add'}>
-        <button>Add New Bike</button>
-        </Link>}
+        {isAdmin && (
+          <Link to={'/add'}>
+            <button type="button">Add New Bike</button>
+          </Link>
+        )}
         <div>
           {bikes ? (
             <div>

@@ -18,6 +18,12 @@ export const deleteBike = (bike) => {
     bike,
   };
 };
+export const createBike = (bike) => {
+  return {
+    type: CREATE_NEW_BIKE,
+    bike,
+  };
+};
 
 //THUNK CREATORS
 export const fetchBikes = () => async (dispatch) => {
@@ -41,6 +47,19 @@ export const deleteSingleBike = (id) => async (dispatch) => {
     console.error(error);
   }
 };
+//THUNK CREATE BIKE
+export const createSingleBike = (bike) => async (dispatch) => {
+  try {
+    const { data: createdBike } = await axios.post('/api/bikes', bike, {
+      headers: {
+        authorization: window.localStorage.getItem('token'),
+      },
+    });
+    dispatch(createBike(createdBike));
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 //INITIAL STATE
 const initialState = [];
@@ -50,6 +69,8 @@ const bikesReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_BIKES:
       return action.bikes;
+    case CREATE_NEW_BIKE:
+      return [...state, action.bike];
     case DELETE_BIKE:
       return state.filter((bike) => bike.id !== action.bike.id);
     default:

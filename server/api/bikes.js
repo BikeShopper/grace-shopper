@@ -22,6 +22,16 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
+// POST /api/bikes
+router.post('/', requireToken, isAdmin, async (req, res, next) => {
+  try {
+    const bike = await Bike.create(req.body);
+    res.status(201).send(bike);
+  } catch (error) {
+    next(error);
+  }
+});
+
 //DELETE /api/bikes/:bikeId
 router.delete('/:bikeId', requireToken, isAdmin, async (req, res, next) => {
   try {
@@ -34,7 +44,7 @@ router.delete('/:bikeId', requireToken, isAdmin, async (req, res, next) => {
 });
 
 //PUT /api/bikes/:bikeId
-router.put('/:bikeId', async (req, res, next) => {
+router.put('/:bikeId', requireToken, isAdmin, async (req, res, next) => {
   try {
     const bikeUpdate = await Bike.findByPk(req.params.bikeId);
     const updatedBike = await bikeUpdate.update(req.body);
