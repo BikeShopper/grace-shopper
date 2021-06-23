@@ -1,6 +1,7 @@
 import React from "react";
 import history from "../history";
 import { connect } from "react-redux";
+import { fulfillCart } from "../store/cart";
 
 class Checkout extends React.Component {
   constructor() {
@@ -25,7 +26,11 @@ class Checkout extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    if (this.props.userId) {
+      this.props.completeCheckout(this.props.userId);
+    } else {
+      localStorage.clear();
+    }
     history.push("/confirmation");
   }
 
@@ -97,8 +102,8 @@ const mapState = (state) => {
 
 const mapDispatch = (dispatch) => {
   return {
-    completeCheckout: () => dispatch(),
+    completeCheckout: (userId) => dispatch(fulfillCart(userId)),
   };
 };
 
-export default connect(mapState)(Checkout);
+export default connect(mapState, mapDispatch)(Checkout);
