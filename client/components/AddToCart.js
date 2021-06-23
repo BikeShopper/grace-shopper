@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 
 export default class AddToCart extends Component {
+
     constructor() {
         super();
         this.state = {
@@ -29,18 +30,16 @@ export default class AddToCart extends Component {
             UpdateCart(this.state, prevState);
         }
     }
+  }
 
-    render() {
-        const { bike } = this.props;
-        return (
-            <div className="add-to-cart">
-                <button
-                type="button"
-                onClick={() => this.AddToCart(bike)}
-                >
-                ADD TO CART
-                </button>
-            </div>
-        )
-    }
+  render() {
+    const { bike } = this.props;
+    return (
+      <div className="add-to-cart">
+        <button type="button" onClick={() => this.AddToCart(bike)}>
+          ADD TO CART
+        </button>
+      </div>
+    );
+  }
 }

@@ -1,9 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { fetchBikes } from "../store/allProducts";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchBikes } from '../store/allProducts';
+import AddToCart from './AddToCart';
 import { fetchCart, addingToCart, updatingCart } from "../store/cart";
-import AddToCart from "./AddToCart";
+import { deleteSingleBike } from '../store/allProducts';
+import { AdminEditBike } from './AdminEditBike';
 
 class AllProducts extends Component {
   constructor(props) {
@@ -12,10 +14,10 @@ class AllProducts extends Component {
     this.state = {
       cart: [],
       total: 0,
-      itemQty: 0
     };
     this.UpdateCart = this.UpdateCart.bind(this);
-  };
+    this.deleteButton = this.deleteButton.bind(this);
+  }
 
   componentDidMount() {
     this.props.loadBikes();
@@ -85,26 +87,46 @@ class AllProducts extends Component {
     })
   };
 
-  render() {
-    const { bikes } = this.props || [];
+  deleteButton(event) {
+    this.props.deleteBike(event.target.value);
+  }
 
+  render() {
+    const { bikes, isAdmin } = this.props || [];
     return (
       <div>
         <h1>All Bikes:</h1>
+        {isAdmin && (
+          <Link to={'/add'}>
+            <button type="button">Add New Bike</button>
+          </Link>
+        )}
         <div>
           {bikes ? (
             <div>
-              {bikes.map((bike) => {
-                return (
-                  <div className="bike-container" key={bike.id}>
-                    <Link to={`/bikes/${bike.id}`}>
-                      <img src={bike.imageURL} />
-                      <h3>{bike.model}</h3>
-                    </Link>
-                    <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
-                  </div>
-                )
-                })}
+              {bikes.map((bike) => (
+                <div className="bike-container" key={bike.id}>
+                  <Link to={`/bikes/${bike.id}`}>
+                    <img src={bike.imageURL} />
+                    <h3>{bike.model}</h3>
+                  </Link>
+                  <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
+                  {isAdmin && (
+                    <div>
+                      <Link to={`/bikes/${bike.id}/edit`}>
+                        <button>Edit</button>
+                      </Link>
+                      <button
+                        value={bike.id}
+                        type="button"
+                        onClick={this.deleteButton}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           ) : (
             <div>There are no bikes for sale yet</div>
@@ -128,6 +150,7 @@ const mapDispatch = (dispatch) => {
     loadCart: (id) => dispatch(fetchCart(id)),
     addToCart: (item) => dispatch(addingToCart(item)),
     updateCart: (id, item) => dispatch(updatingCart(id, item)),
+    deleteBike: (id) => dispatch(deleteSingleBike(id)),
   };
 };
 export default connect(mapState, mapDispatch)(AllProducts);
