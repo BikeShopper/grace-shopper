@@ -5,7 +5,7 @@ const app = express();
 module.exports = app;
 
 //if I'm not in my production env I want access to the  secrets.js file inside of my local machine ( each dev should have one! ) --> development, tests
-if (process.env.NODE_ENV !== 'production') require('../secrets');
+// if (process.env.NODE_ENV !== 'production') require('../secrets');
 // console.log('log my env===> ', process.env) LEFT INTENTIONALLY;
 
 const STRIPE_API_KEY = process.env.STRIPE_API_KEY;
