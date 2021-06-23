@@ -1,35 +1,56 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { addNewBike } from '../store/allProducts';
+import ErrorPage from './ErrorPage';
+import { createSingleBike } from '../store/allProducts';
 
-export default class AdminAddNewBike extends Component {
+export class AdminAddNewBike extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      model: '',
+      price: '',
+      description: '',
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    if (this.state.model && this.state.price && this.state.description) {
+      this.props.createBike(this.state);
+      this.setState({
+        model: '',
+        price: '',
+        description: '',
+      });
+    }
+  }
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
   }
 
   render() {
     const { isAdmin } = this.props;
-    // const { model, price, description } = this.state;
-    // const { handleChange, handleSubmit } = this;
+    const { model, price, description } = this.state;
+    const { handleChange, handleSubmit } = this;
     return isAdmin ? (
       <div className="container">
         <div>
-          <form
-            className="edit-bike-form"
-            //   onSubmit={}
-          >
+          <form className="edit-bike-form" onSubmit={handleSubmit}>
             <div className="field" tabIndex="1">
               <label htmlFor="model">
                 <i aria-hidden="true"></i>Bike Model
               </label>
               <input
                 name="model"
-                // value={}
-                // onChange={}
+                value={model}
+                onChange={handleChange}
                 type="text"
                 placeholder="Bike Model"
-                required
+                // required
               />
             </div>
             <div className="field" tabIndex="2">
@@ -38,11 +59,11 @@ export default class AdminAddNewBike extends Component {
               </label>
               <input
                 name="price"
-                // value={}
-                // onChange={}
+                value={price}
+                onChange={handleChange}
                 type="text"
                 placeholder="$"
-                required
+                // required
               />
             </div>
             <div className="field" tabIndex="3">
@@ -51,19 +72,21 @@ export default class AdminAddNewBike extends Component {
               </label>
               <textarea
                 name="description"
-                // value={}
-                // onChange={}
+                value={description}
+                onChange={handleChange}
                 placeholder="type here"
-                required
+                // required
               ></textarea>
             </div>
             <div>
               <label htmlFor="file">Select Picture</label>
               <input type="file" name="file" />
             </div>
-            <button type="submit" className="edit-btn">
-              Add New Bike <i></i>
-            </button>
+            <div>
+              <button type="submit" className="add-btn">
+                Add New Bike <i></i>
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -72,3 +95,10 @@ export default class AdminAddNewBike extends Component {
     );
   }
 }
+
+const mapDispatch = (dispatch) => {
+  return {
+    createBike: (bike) => dispatch(createSingleBike(bike)),
+  };
+};
+export default connect(null, mapDispatch)(AdminAddNewBike);

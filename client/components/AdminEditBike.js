@@ -40,7 +40,6 @@ export class AdminEditBike extends Component {
 
   render() {
     const { isAdmin } = this.props;
-    console.log('in render=> ', this.state);
     const { model, price, description } = this.state;
     const { handleChange, handleSubmit } = this;
     return isAdmin ? (
