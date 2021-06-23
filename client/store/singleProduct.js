@@ -30,7 +30,11 @@ export const fetchSingleBike = (id) => {
 //THUNK UPDATE BIKE
 export const updateSingleBike = (id, bike) => async (dispatch) => {
   try {
-    const { data: updatedBike } = await Axios.put(`/api/bikes/${id}`, bike);
+    const { data: updatedBike } = await Axios.put(`/api/bikes/${id}`, bike, {
+      headers: {
+        authorization: window.localStorage.getItem('token'),
+      },
+    });
     dispatch(updateBike(updatedBike));
   } catch (error) {
     console.error(error);

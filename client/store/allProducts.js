@@ -50,7 +50,11 @@ export const deleteSingleBike = (id) => async (dispatch) => {
 //THUNK CREATE BIKE
 export const createSingleBike = (bike) => async (dispatch) => {
   try {
-    const { data: createdBike } = await axios.post('/api/bikes', bike);
+    const { data: createdBike } = await axios.post('/api/bikes', bike, {
+      headers: {
+        authorization: window.localStorage.getItem('token'),
+      },
+    });
     dispatch(createBike(createdBike));
   } catch (error) {
     console.error(error);
