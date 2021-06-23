@@ -20,22 +20,16 @@ class Routes extends Component {
   }
 
   render() {
-    const { isLoggedIn, isAdmin } = this.props;
+    const { isLoggedIn, isAdmin, userId } = this.props;
     return (
       <div>
         {
           <Switch>
-            {/* {isAdmin ? (
-              <Switch> */}
             <Route
               exact
               path="/admin"
               render={() => <Admin isAdmin={isAdmin} />}
             />
-            {/* // </Switch>
-            // ) : (
-            //   'Restricted Access'
-            // )} */}
             <Route path="/home" component={Home} />
             <Route path="/" exact component={Login} />
             <Route exact path="/login" exact component={Login} />
@@ -80,6 +74,7 @@ const mapState = (state) => {
     // Otherwise, state.auth will be an empty object, and state.auth.id will be falsey
     isAdmin: state.auth.isAdmin,
     isLoggedIn: !!state.auth.id,
+    userId: state.auth.id,
   };
 };
 
