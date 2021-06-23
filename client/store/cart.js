@@ -1,6 +1,7 @@
 import axios from "axios";
 
 // ACTION TYPES
+
 const SET_CART =  "SET_CART";
 const ADD_TO_CART = "ADD_TO_CART";
 const UPDATE_CART = "UPDATE_CART";
@@ -50,11 +51,13 @@ export const updatingCart = (id, item) => async dispatch => {
     }
 }
 
+
 // INITIAL STATE
 const initialState = [];
 
 // REDUCER
 const cartReducer = (state = initialState, action) => {
+
     switch (action.type) {
         case SET_CART:
             return action.cart;

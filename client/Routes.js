@@ -1,3 +1,4 @@
+
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Route, Switch, Redirect } from 'react-router-dom';
@@ -10,6 +11,9 @@ import Cart from './components/Cart';
 import Admin from './components/Admin';
 import AdminEditBike from './components/AdminEditBike';
 import AdminAddNewBike from './components/AdminAddNewBike';
+import Confirmation from "./components/Confirmation";
+import Checkout from "./components/Checkout";
+
 
 /**
  * COMPONENT
@@ -58,6 +62,8 @@ class Routes extends Component {
             <Route exact path="/bikes/:bikeId" component={SingleProduct} />
             {/*It may be necessary to add the userId to the cart Route*/}
             <Route path="/cart" component={Cart} />
+            <Route path="/checkout" component={Checkout} />
+            <Route path="/confirmation" component={Confirmation} />
           </Switch>
         }
       </div>
