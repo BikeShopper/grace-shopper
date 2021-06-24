@@ -1,7 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { logout } from '../store';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { logout } from "../store";
 
 const Navbar = ({ handleClick, isLoggedIn, isAdmin }) => (
   <div>
@@ -16,6 +16,7 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin }) => (
           </a>
           <Link to="/bikes">Bikes</Link>
           {isAdmin && <Link to="/admin">Users</Link>}
+          <Link to="/cart">Cart</Link>
         </div>
       ) : (
         <div>
