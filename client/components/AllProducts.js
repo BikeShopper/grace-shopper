@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchBikes } from '../store/allProducts';
-import AddToCart from './AddToCart';
-import { fetchCart, addingToCart, updatingCart } from '../store/cart';
-import { deleteSingleBike } from '../store/allProducts';
-import { compose } from 'redux';
-import { withStyles } from '@material-ui/styles';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchBikes } from "../store/allProducts";
+import AddToCart from "./AddToCart";
+import { fetchCart, addingToCart, updatingCart } from "../store/cart";
+import { deleteSingleBike } from "../store/allProducts";
+import { compose } from "redux";
+import { withStyles } from "@material-ui/styles";
 import {
   Typography,
   AppBar,
@@ -24,9 +24,11 @@ import {
   Container,
   CardActionArea,
   Button,
-} from '@material-ui/core';
-import { styles } from '../../public/styles';
-import { AdminEditBike } from './AdminEditBike';
+} from "@material-ui/core";
+import { styles } from "../../public/styles";
+import { AdminEditBike } from "./AdminEditBike";
+
+console.log("Hello World");
 
 class AllProducts extends Component {
   constructor(props) {
@@ -44,18 +46,18 @@ class AllProducts extends Component {
     const { localStorage } = window;
     this.props.loadBikes();
     if (!localStorage.cart) {
-      localStorage.setItem('cart', JSON.stringify([]));
+      localStorage.setItem("cart", JSON.stringify([]));
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state !== prevState) {
       const { cart, total, itemQty } = this.state;
-      localStorage.setItem('cart', JSON.stringify(cart));
-      localStorage.setItem('total', JSON.stringify(total));
-      localStorage.setItem('itemQty', JSON.stringify(itemQty));
+      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem("total", JSON.stringify(total));
+      localStorage.setItem("itemQty", JSON.stringify(itemQty));
     }
-    if ((this.props.cart.length !== prevProps.cart.length && this.props.userId)) {
+    if (this.props.cart.length !== prevProps.cart.length && this.props.userId) {
       const { userId, loadCart } = this.props;
       loadCart(userId);
     }
@@ -114,17 +116,17 @@ class AllProducts extends Component {
   render() {
     const { bikes, isAdmin, cart } = this.props || [];
     const { classes } = this.props;
-    let cartItems = []
+    let cartItems = [];
     if (cart[0]) {
-      cart.forEach(item => {
-        cartItems.push(item)
-      })
+      cart.forEach((item) => {
+        cartItems.push(item);
+      });
     }
     return (
       <div>
         <h1>All Bikes:</h1>
         {isAdmin && (
-          <Link to={'/add'}>
+          <Link to={"/add"}>
             <Button variant="outlined" type="button">
               Add New Bike
             </Button>
@@ -142,7 +144,7 @@ class AllProducts extends Component {
                       // Check if item.bikeId === bike.id
                       // Quantity = item-bikeQty
                       for (let item of cart) {
-                        item = cart[(cart.indexOf(item))]
+                        item = cart[cart.indexOf(item)];
                         if (item.bikeId === bike.id) {
                           quantity = item.bikeQty;
                         } else {
@@ -151,55 +153,59 @@ class AllProducts extends Component {
                       }
                       return (
                         <Grid item className="bike-cr" key={bike.id}>
-                        <Card className={classes.bikeBox}>
-                          <CardActionArea
-                            component="div"
-                            className={classes.bikeBoxText}
-                          >
-                            <Link to={`/bikes/${bike.id}`}>
-                              <CardMedia
-                                image={bike.imageURL}
-                                className={classes.img}
-                              />
-                              {/* <img src={bike.imageURL} /> */}
-                              <CardContent>
-                                <Typography component="h6">
-                                  {bike.model}
-                                </Typography>
-                              </CardContent>
-                            </Link>
-                          </CardActionArea>
-                          {/* <CardActions> */}
-                          <AddToCart bike={bike} UpdateCart={this.UpdateCart} bikeQty={quantity}/>
-                          {isAdmin && (
-                            <div>
-                              <Link to={`/bikes/${bike.id}/edit`}>
+                          <Card className={classes.bikeBox}>
+                            <CardActionArea
+                              component="div"
+                              className={classes.bikeBoxText}
+                            >
+                              <Link to={`/bikes/${bike.id}`}>
+                                <CardMedia
+                                  image={bike.imageURL}
+                                  className={classes.img}
+                                />
+                                {/* <img src={bike.imageURL} /> */}
+                                <CardContent>
+                                  <Typography component="h6">
+                                    {bike.model}
+                                  </Typography>
+                                </CardContent>
+                              </Link>
+                            </CardActionArea>
+                            {/* <CardActions> */}
+                            <AddToCart
+                              bike={bike}
+                              UpdateCart={this.UpdateCart}
+                              bikeQty={quantity}
+                            />
+                            {isAdmin && (
+                              <div>
+                                <Link to={`/bikes/${bike.id}/edit`}>
+                                  <Button
+                                    className={classes.btn}
+                                    variant="outlined"
+                                    color="primary"
+                                  >
+                                    Edit
+                                  </Button>
+                                </Link>
                                 <Button
-                                  className={classes.btn}
                                   variant="outlined"
                                   color="primary"
+                                  className={classes.btn}
+                                  type="button"
+                                  value={bike.id}
+                                  onClick={() => {
+                                    this.deleteButton(bike.id);
+                                  }}
                                 >
-                                  Edit
+                                  Delete
                                 </Button>
-                              </Link>
-                              <Button
-                                variant="outlined"
-                                color="primary"
-                                className={classes.btn}
-                                type="button"
-                                value={bike.id}
-                                onClick={() => {
-                                  this.deleteButton(bike.id);
-                                }}
-                              >
-                                Delete
-                              </Button>
-                            </div>
-                          )}
-                          {/* </CardActions> */}
-                        </Card>
-                      </Grid>
-                      )
+                              </div>
+                            )}
+                            {/* </CardActions> */}
+                          </Card>
+                        </Grid>
+                      );
                     })}
                   </Grid>
                 </Grid>
