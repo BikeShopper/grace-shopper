@@ -1,4 +1,5 @@
 import axios from 'axios';
+import history from '../history';
 
 // ACTIONS TYPE
 const SET_BIKES = 'SET_BIKES';
@@ -56,6 +57,7 @@ export const createSingleBike = (bike) => async (dispatch) => {
       },
     });
     dispatch(createBike(createdBike));
+    history.push('/bikes');
   } catch (error) {
     console.error(error);
   }

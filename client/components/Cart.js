@@ -7,6 +7,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchCart } from "../store/cart";
+import { Link } from "react-router-dom";
 import { fetchBikes } from "../store/allProducts";
 import axios from "axios";
 
@@ -29,7 +30,6 @@ class Cart extends Component {
   }
 
   async getQuantity() {
-
     const { data: bikeQty } = await axios.get(
       `/api/userCart/bikeQty/${this.props.userId}`
     );
@@ -42,25 +42,25 @@ class Cart extends Component {
 
   render() {
     const { cart, bikes } = this.props || [];
-    let cartBikes = []
-    cart.forEach(item => {
-        for (const bike of bikes) {
-            if (bike.id === item.bikeId) {
-                cartBikes.push({item: bike, bikeQty: item.bikeQty})
-            }
+    let cartBikes = [];
+    cart.forEach((item) => {
+      for (const bike of bikes) {
+        if (bike.id === item.bikeId) {
+          cartBikes.push({ item: bike, bikeQty: item.bikeQty });
         }
-    })
-
-    //const bikeIds = []
-    //cart.forEach(item => bikeIds.push(item.bikeId))
+      }
+    });
 
     return (
       <div id="cart-container">
         <nav>
           <h2>Your Cart</h2>
         </nav>
+        <Link to="/checkout">
+          <button type="button">Checkout</button>
+        </Link>
         <section id="cart">
-          {(cart[0]) ? (
+          {cart[0] ? (
             cartBikes.map((bike) => {
               return (
                 <div className="bike-container" key={bike.item.id}>
