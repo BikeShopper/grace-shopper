@@ -43,7 +43,7 @@ class AllProducts extends Component {
 
   UpdateCart(cartItem, prevItem) {
     const { cart, addToCart, updateCart, userId } = this.props;
-    const hasItem = cart.some((item) => item.id === cartItem.bike.id);
+    const hasItem = cart.some((item) => item.bikeId === cartItem.bike.id);
     console.log("hasItem var", hasItem);
 
     if (hasItem) {
@@ -56,7 +56,7 @@ class AllProducts extends Component {
         quantity: cartItem.qty,
       };
       console.log("UPDATE", cartItem.qty);
-      updateCart(userId, item, cartItem.bike);
+      updateCart(userId, item);
     } else {
       // Otherwise, add it to the userCart.
       // It takes a quantity and a price
@@ -94,7 +94,8 @@ class AllProducts extends Component {
   }
 
   render() {
-    const { bikes, isAdmin } = this.props || [];
+    const { bikes, isAdmin, cart } = this.props || [];
+    let quantity = 0;
     return (
       <div>
         <h1>All Bikes:</h1>
@@ -112,7 +113,7 @@ class AllProducts extends Component {
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
                   </Link>
-                  <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
+                  <AddToCart bike={bike} UpdateCart={this.UpdateCart} bikeQty={quantity}/>
                   {isAdmin && (
                     <div>
                       <Link to={`/bikes/${bike.id}/edit`}>

@@ -4,11 +4,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 export default class AddToCart extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       bike: {},
-      qty: 0,
+      qty: props.bikeQty,
     };
     this.AddToCart = this.AddToCart.bind(this);
   }

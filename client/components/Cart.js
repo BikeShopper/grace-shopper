@@ -7,6 +7,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchCart } from "../store/cart";
+import { fetchBikes } from "../store/allProducts";
 import axios from "axios";
 
 class Cart extends Component {
@@ -15,6 +16,11 @@ class Cart extends Component {
     this.state = {};
     this.getQuantity = this.getQuantity.bind(this);
   }
+
+  componentDidMount() {
+    this.props.loadBikes();
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.cart.length !== prevProps.cart.length) {
       this.props.loadCart(this.props.userId);
@@ -23,7 +29,6 @@ class Cart extends Component {
   }
 
   async getQuantity() {
-    const bikeIds = this.props.cart.map((bike) => bike.id);
 
     const { data: bikeQty } = await axios.get(
       `/api/userCart/bikeQty/${this.props.userId}`
@@ -36,15 +41,22 @@ class Cart extends Component {
   }
 
   render() {
-    const cart = this.props.cart || [];
+    const { cart, bikes } = this.props || [];
+    let cartBikes = []
+    if (bikes.length > 0) {
+        cart.forEach(item => {
+            cartBikes = bikes.filter(bike => bike.id === item.bikeId)
+        })
+    }
+
     return (
       <div id="cart-container">
         <nav>
           <h2>Your Cart</h2>
         </nav>
         <section id="cart">
-          {cart[0] ? (
-            cart.map((bike) => {
+          {(cart[0] && cartBikes[0]) ? (
+            cartBikes.map((bike) => {
               return (
                 <div className="bike-container" key={bike.id}>
                   <div>
@@ -65,11 +77,13 @@ class Cart extends Component {
 }
 
 const mapState = (state) => ({
+  bikes: state.bikesReducer,
   userId: state.auth.id,
   cart: state.cartReducer,
 });
 
 const mapDispatch = (dispatch) => ({
+  loadBikes: () => dispatch(fetchBikes()),
   loadCart: (ids) => dispatch(fetchCart(ids)),
 });
 
