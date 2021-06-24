@@ -52,4 +52,4 @@ class AddToCart extends Component {
   }
 }
 
-export default withStyles(styles)(AddToCart);
+export default withStyles( 'hi' styles)(AddToCart);

@@ -1,6 +1,6 @@
 //this page is for Material UI styling
 import { makeStyles } from '@material-ui/core/styles';
-
+console.log('hi');
 //material ui hook
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,6 +26,7 @@ export const styles = (theme) => ({
     width: '200px',
   },
   img: {
+    console.log('hi');
     height: '120px',
   },
   btn: {
