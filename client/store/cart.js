@@ -64,10 +64,11 @@ const cartReducer = (state = initialState, action) => {
     case ADD_TO_CART:
       return [...state, action.item];
     case UPDATE_CART:
-      const updatedCart = state.filter(bike => 
-        bike.bikeId === action.bikeId
-        ? {bikeId, bikeQty: bike.bikeQty + 1 }
-        : bike
+      console.log("State on Update", state)
+      const updatedCart = state.filter(item => 
+        item.bikeId === action.bikeId
+        ? {bikeId: item.bikeId, bikeQty: item.bikeQty + 1 }
+        : item
       )
       return updatedCart;
     default:

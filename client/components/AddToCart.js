@@ -16,6 +16,7 @@ export default class AddToCart extends Component {
 
   AddToCart(bike) {
     // Set data to localState, individual for each item.
+    console.log("Check if quantity is passed", this.state.qty);
     this.setState((state) => {
       return {
         bike,

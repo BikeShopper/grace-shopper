@@ -34,15 +34,15 @@ class AllProducts extends Component {
       localStorage.setItem("total", JSON.stringify(total));
       localStorage.setItem("itemQty", JSON.stringify(itemQty));
     }
-    if (this.props.cart.length !== prevProps.cart.length && this.props.userId) {
+    if ((this.props.cart.length !== prevProps.cart.length && this.props.userId)) {
       const { userId, loadCart } = this.props;
       loadCart(userId);
       console.log(this.props);
     }
   }
 
-  UpdateCart(cartItem, prevItem) {
-    const { cart, addToCart, updateCart, userId } = this.props;
+  async UpdateCart(cartItem, prevItem) {
+    const { cart, addToCart, updateCart, loadCart, userId } = this.props;
     const hasItem = cart.some((item) => item.bikeId === cartItem.bike.id);
     console.log("hasItem var", hasItem);
 
@@ -56,7 +56,8 @@ class AllProducts extends Component {
         quantity: cartItem.qty,
       };
       console.log("UPDATE", cartItem.qty);
-      updateCart(userId, item);
+      await updateCart(userId, item);
+      loadCart(userId);
     } else {
       // Otherwise, add it to the userCart.
       // It takes a quantity and a price
@@ -95,6 +96,12 @@ class AllProducts extends Component {
 
   render() {
     const { bikes, isAdmin, cart } = this.props || [];
+    let cartItems = []
+    if (cart[0]) {
+      cart.forEach(item => {
+        cartItems.push(item)
+      })
+    }
     let quantity = 0;
     return (
       <div>
@@ -107,8 +114,23 @@ class AllProducts extends Component {
         <div>
           {bikes ? (
             <div>
-              {bikes.map((bike) => (
-                <div className="bike-container" key={bike.id}>
+              {bikes.map((bike) => {
+                // iterate through cartItems
+                // Check if item.bikeId === bike.id
+                // Quantity = item-bikeQty
+                if (cart.length > 0) {
+                  console.log("Condition met, cart not empty");
+                  for (const item of cart) {
+                    console.log("Check cart Item", item);
+                    if (item.bikeId === bike.id) {
+                      quantity = item.bikeQty;
+                    } else {
+                      quantity = 0
+                    }
+                  }
+                }
+                return (
+                  <div className="bike-container" key={bike.id}>
                   <Link to={`/bikes/${bike.id}`}>
                     <img src={bike.imageURL} />
                     <h3>{bike.model}</h3>
@@ -128,8 +150,9 @@ class AllProducts extends Component {
                       </button>
                     </div>
                   )}
-                </div>
-              ))}
+                  </div>
+                )
+              })}
             </div>
           ) : (
             <div>There are no bikes for sale yet</div>
