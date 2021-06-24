@@ -37,13 +37,20 @@ class AddToCart extends Component {
   }
 
   render() {
-    const { bike } = this.props;
+    const { bike, classes } = this.props;
     return (
       <div className="add-to-cart">
-        <button type="button" onClick={() => this.AddToCart(bike)}>
-          ADD TO CART
-        </button>
+        <Button
+          className={classes.btn}
+          variant="contained"
+          color="primary"
+          type="button"
+          onClick={() => this.AddToCart(bike)}
+        >
+          ADD
+        </Button>
       </div>
     );
   }
 }
+export default withStyles(styles)(AddToCart);

@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withStyles } from '@material-ui/styles';
+import { styles } from '../../public/styles';
+import { Button, Paper } from '@material-ui/core';
 import ErrorPage from './ErrorPage';
 import { updateSingleBike, fetchSingleBike } from '../store/singleProduct';
 
@@ -39,58 +43,65 @@ export class AdminEditBike extends Component {
   }
 
   render() {
-    const { isAdmin } = this.props;
+    const { isAdmin, classes } = this.props;
     const { model, price, description } = this.state;
     const { handleChange, handleSubmit } = this;
     return isAdmin ? (
-      <div className="container">
+      <Paper variant="outlined" className={classes.formContainer}>
         <div>
-          <form className="edit-bike-form" onSubmit={handleSubmit}>
-            <div className="field" tabIndex="1">
-              <label htmlFor="model">
-                <i aria-hidden="true"></i>Bike Model
-              </label>
-              <input
-                name="model"
-                value={model}
-                onChange={handleChange}
-                type="text"
-                placeholder="Bike Model"
-              />
-            </div>
-            <div className="field" tabIndex="2">
-              <label htmlFor="price">
-                <i></i>Price
-              </label>
-              <input
-                name="price"
-                value={price}
-                onChange={handleChange}
-                type="text"
-                placeholder="$"
-              />
-            </div>
-            <div className="field" tabIndex="3">
-              <label htmlFor="description">
-                <i></i>Description
-              </label>
-              <textarea
-                name="description"
-                value={description}
-                onChange={handleChange}
-                placeholder="type here"
-              ></textarea>
-            </div>
-            <div>
-              <label htmlFor="file">Select Picture</label>
-              <input type="file" name="file" />
-            </div>
-            <button type="submit" className="edit-btn">
-              Edit Bike <i></i>
-            </button>
-          </form>
+          <div>
+            <form className="edit-bike-form" onSubmit={handleSubmit}>
+              <div className="field" tabIndex="1">
+                <label htmlFor="model">
+                  <i aria-hidden="true"></i>Bike Model
+                </label>
+                <input
+                  name="model"
+                  value={model}
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Bike Model"
+                />
+              </div>
+              <div className="field" tabIndex="2">
+                <label htmlFor="price">
+                  <i></i>Price
+                </label>
+                <input
+                  name="price"
+                  value={price}
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="$"
+                />
+              </div>
+              <div className="field" tabIndex="3">
+                <label htmlFor="description">
+                  <i></i>Description
+                </label>
+                <textarea
+                  name="description"
+                  value={description}
+                  onChange={handleChange}
+                  placeholder="type here"
+                ></textarea>
+              </div>
+              <div>
+                <label htmlFor="file">Select Picture</label>
+                <input type="file" name="file" />
+              </div>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                className={classes.btn}
+              >
+                Edit <i></i>
+              </Button>
+            </form>
+          </div>
         </div>
-      </div>
+      </Paper>
     ) : (
       <ErrorPage />
     );
@@ -109,4 +120,7 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default connect(mapState, mapDispatch)(AdminEditBike);
+export default compose(
+  withStyles(styles),
+  connect(mapState, mapDispatch)
+)(AdminEditBike);

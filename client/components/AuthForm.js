@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { authenticate } from '../store';
-
+import { Button } from '@material-ui/core';
+import useStyles from '../../public/styles';
 /**
  * COMPONENT
  */
 const AuthForm = (props) => {
   const { name, displayName, handleSubmit, error } = props;
-
+  const classes = useStyles();
   return (
     <div>
       <form onSubmit={handleSubmit} name={name}>
@@ -23,8 +24,8 @@ const AuthForm = (props) => {
           </label>
           <input name="password" type="password" />
         </div>
-        <div>
-          <button type="submit">{displayName}</button>
+        <div className={classes.buttons}>
+          <Button type="submit">{displayName}</Button>
         </div>
         {error && error.response && <div> {error.response.data} </div>}
       </form>
@@ -64,7 +65,6 @@ const mapDispatch = (dispatch) => {
       const password = evt.target.password.value;
       dispatch(authenticate(username, password, formName));
     },
-    
   };
 };
 

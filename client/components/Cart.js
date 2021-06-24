@@ -7,6 +7,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchCart } from "../store/cart";
+import { fetchBikes } from "../store/allProducts";
 import axios from "axios";
 
 class Cart extends Component {
@@ -15,6 +16,11 @@ class Cart extends Component {
     this.state = {};
     this.getQuantity = this.getQuantity.bind(this);
   }
+
+  componentDidMount() {
+    this.props.loadBikes();
+  }
+
   componentDidUpdate(prevProps) {
     if (this.props.cart.length !== prevProps.cart.length) {
       this.props.loadCart(this.props.userId);
@@ -23,7 +29,6 @@ class Cart extends Component {
   }
 
   async getQuantity() {
-    const bikeIds = this.props.cart.map((bike) => bike.id);
 
     const { data: bikeQty } = await axios.get(
       `/api/userCart/bikeQty/${this.props.userId}`
@@ -36,20 +41,18 @@ class Cart extends Component {
   }
 
   render() {
-
     const { cart, bikes } = this.props || [];
-    let cartBikes = [];
-    cart.forEach((item) => {
-      for (const bike of bikes) {
-        if (bike.id === item.bikeId) {
-          cartBikes.push({ item: bike, bikeQty: item.bikeQty });
+    let cartBikes = []
+    cart.forEach(item => {
+        for (const bike of bikes) {
+            if (bike.id === item.bikeId) {
+                cartBikes.push({item: bike, bikeQty: item.bikeQty})
+            }
         }
-      }
-    });
+    })
 
     //const bikeIds = []
     //cart.forEach(item => bikeIds.push(item.bikeId))
-
 
     return (
       <div id="cart-container">
@@ -57,16 +60,14 @@ class Cart extends Component {
           <h2>Your Cart</h2>
         </nav>
         <section id="cart">
-          {cart[0] ? (
-            cart.map((bike) => {
+          {(cart[0]) ? (
+            cartBikes.map((bike) => {
               return (
-
                 <div className="bike-cr" key={bike.item.id}>
-
                   <div>
-                    <img src={bike.imageURL} />
-                    <h3>{bike.model}</h3>
-                    <p>Quantity: {this.state[bike.id]}</p>
+                    <img src={bike.item.imageURL} />
+                    <h3>{bike.item.model}</h3>
+                    <p>Quantity: {bike.bikeQty}</p>
                   </div>
                 </div>
               );
@@ -81,11 +82,13 @@ class Cart extends Component {
 }
 
 const mapState = (state) => ({
+  bikes: state.bikesReducer,
   userId: state.auth.id,
   cart: state.cartReducer,
 });
 
 const mapDispatch = (dispatch) => ({
+  loadBikes: () => dispatch(fetchBikes()),
   loadCart: (ids) => dispatch(fetchCart(ids)),
 });
 

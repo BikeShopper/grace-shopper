@@ -27,13 +27,11 @@ router.get("/:id", async (req, res, next) => {
     });
 
     // Retrieve bike info
-    const bikeIds = cartItems.map((bike) => bike.bikeId);
-    const bikes = await Bike.findAll({
-      where: {
-        id: bikeIds,
-      },
+    const bikeIds = cartItems.map((bike) => {
+      return {bikeId: bike.bikeId, bikeQty: bike.quantity}
     });
-    res.json(bikes);
+
+    res.json(bikeIds);
   } catch (error) {
     next(error);
   }
