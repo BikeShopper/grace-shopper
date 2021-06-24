@@ -58,6 +58,7 @@ class AllProducts extends Component {
     if ((this.props.cart.length !== prevProps.cart.length && this.props.userId)) {
       const { userId, loadCart } = this.props;
       loadCart(userId);
+      console.log(this.props);
     }
   }
 
@@ -65,6 +66,7 @@ class AllProducts extends Component {
   async UpdateCart(cartItem, prevItem) {
     const { cart, addToCart, updateCart, loadCart, userId } = this.props;
     const hasItem = cart.some((item) => item.bikeId === cartItem.bike.id);
+    console.log("hasItem var", hasItem);
 
 
     if (hasItem) {
@@ -77,6 +79,7 @@ class AllProducts extends Component {
         quantity: cartItem.qty,
       };
 
+      console.log("UPDATE", cartItem.qty);
       await updateCart(userId, item);
       loadCart(userId);
 
@@ -89,7 +92,7 @@ class AllProducts extends Component {
         price: cartItem.bike.price,
         userId,
       };
-
+      console.log('ADD');
       addToCart(item);
     }
     this.setState((state) => {
@@ -125,8 +128,11 @@ class AllProducts extends Component {
         cartItems.push(item)
       })
     }
+    let quantity = 0;
+
 
     const { classes } = this.props;
+
     return (
       <div>
         <h1>All Bikes:</h1>
@@ -144,17 +150,15 @@ class AllProducts extends Component {
                 <Grid item xs={12}>
                   <Grid container justify="center" spacing={5}>
                     {bikes.map((bike) => (
-                      let quantity = 0;
-                // iterate through cartItems
-                // Check if item.bikeId === bike.id
-                // Quantity = item-bikeQty
-                for (let item of cart) {
-                  item = cart[(cart.indexOf(item))]
-                  if (item.bikeId === bike.id) {
-                    quantity = item.bikeQty;
-                  } else {
-                    quantity = 0;
-
+                       if (cart.length > 0) {
+                  console.log("Condition met, cart not empty");
+                  for (const item of cart) {
+                    console.log("Check cart Item", item);
+                    if (item.bikeId === bike.id) {
+                      quantity = item.bikeQty;
+                    } else {
+                      quantity = 0
+                    }
                   }
                 }
                       <Grid item className="bike-cr" key={bike.id}>
