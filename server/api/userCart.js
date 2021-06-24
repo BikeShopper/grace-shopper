@@ -27,13 +27,11 @@ router.get("/:id", async (req, res, next) => {
     });
 
     // Retrieve bike info
-    const bikeIds = cartItems.map((bike) => bike.bikeId);
-    const bikes = await Bike.findAll({
-      where: {
-        id: bikeIds,
-      },
+    const bikeIds = cartItems.map((bike) => {
+      return {bikeId: bike.bikeId, bikeQty: bike.quantity}
     });
-    res.json(bikes);
+
+    res.json(bikeIds);
   } catch (error) {
     next(error);
   }
@@ -58,7 +56,10 @@ router.post("/", async (req, res, next) => {
       cartId,
       price,
     };
-    const cartItem = await CartItems.create(newCartItem);
+    
+    const newBike = await CartItems.create(newCartItem);
+    const cartItem = {bikeId: newBike.id, bikeQty: newBike.quantity};
+
     res.json(cartItem);
   } catch (error) {
     next(error);

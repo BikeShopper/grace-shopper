@@ -17,9 +17,9 @@ export const addToCart = (item) => ({
   item,
 });
 
-export const updateCart = (item) => ({
+export const updateCart = (bikeId) => ({
   type: UPDATE_CART,
-  item,
+  bikeId,
 });
 
 // THUNK CREATORS
@@ -43,11 +43,11 @@ export const addingToCart = (item) => async (dispatch) => {
   }
 };
 
-export const updatingCart = (id, item, bike) => async (dispatch) => {
+export const updatingCart = (id, item) => async (dispatch) => {
   try {
     const { data: updatedItem } = await axios.put(`/api/userCart/${id}`, item);
     const bikeId = updatedItem[1][0].bikeId;
-    dispatch(updateCart(bike));
+    dispatch(updateCart(bikeId));
   } catch (err) {
     console.log(err.stack);
   }
@@ -64,7 +64,13 @@ const cartReducer = (state = initialState, action) => {
     case ADD_TO_CART:
       return [...state, action.item];
     case UPDATE_CART:
-      return [...state, action.item];
+      console.log("State on Update", state)
+      const updatedCart = state.filter(item => 
+        item.bikeId === action.bikeId
+        ? {bikeId: item.bikeId, bikeQty: item.bikeQty + 1 }
+        : item
+      )
+      return updatedCart;
     default:
       return state;
   }
