@@ -6,21 +6,18 @@ import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import { styles } from '../../public/styles';
 
-
-export default class AddToCart extends Component {
-  constructor(props) {
-    super(props);
-
+class AddToCart extends Component {
+  constructor() {
+    super();
     this.state = {
       bike: {},
-      qty: props.bikeQty,
+      qty: 0,
     };
     this.AddToCart = this.AddToCart.bind(this);
   }
 
   AddToCart(bike) {
     // Set data to localState, individual for each item.
-    console.log("Check if quantity is passed", this.state.qty);
     this.setState((state) => {
       return {
         bike,
