@@ -8,6 +8,9 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchCart } from "../store/cart";
 import { fetchBikes } from "../store/allProducts";
+import { Link } from 'react-router-dom';
+import { Button } from "@material-ui/core";
+
 import axios from "axios";
 
 class Cart extends Component {
@@ -60,6 +63,9 @@ class Cart extends Component {
           <h2>Your Cart</h2>
         </nav>
         <section id="cart">
+          <Link to="/checkout">
+            <Button variant="contained" color="secondary" disableElevation>Checkout</Button>
+          </Link>
           {(cart[0]) ? (
             cartBikes.map((bike) => {
               return (
