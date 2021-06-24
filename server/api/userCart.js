@@ -58,7 +58,10 @@ router.post("/", async (req, res, next) => {
       cartId,
       price,
     };
-    const cartItem = await CartItems.create(newCartItem);
+    
+    const newBike = await CartItems.create(newCartItem);
+    const cartItem = {bikeId: newBike.bikeId, bikeQty: newBike.quantity};
+
     res.json(cartItem);
   } catch (error) {
     next(error);
