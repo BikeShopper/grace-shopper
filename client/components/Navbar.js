@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -44,6 +45,7 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin }) => {
                 </a>
                 <Link to="/bikes">Bikes</Link>
                 {isAdmin && <Link to="/admin">Users</Link>}
+                 <Link to="/cart">Cart</Link>
               </div>
             </AppBar>
           </React.Fragment>
@@ -63,6 +65,7 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin }) => {
     </div>
   );
 };
+
 
 /**
  * CONTAINER
