@@ -1,32 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchBikes } from '../store/allProducts';
-import AddToCart from './AddToCart';
-import { fetchCart, addingToCart, updatingCart } from '../store/cart';
-import { deleteSingleBike } from '../store/allProducts';
-import { compose } from 'redux';
-import { withStyles } from '@material-ui/styles';
-import {
-  Typography,
-  AppBar,
-  Card,
-  ButtonGroup,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  CssBaseline,
-  Grid,
-  Paper,
-  Divider,
-  Toolbar,
-  Container,
-  CardActionArea,
-  Button,
-} from '@material-ui/core';
-import { styles } from '../../public/styles';
-import { AdminEditBike } from './AdminEditBike';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { fetchBikes } from "../store/allProducts";
+import AddToCart from "./AddToCart";
+import { fetchCart, addingToCart, updatingCart } from "../store/cart";
+import { deleteSingleBike } from "../store/allProducts";
+import { AdminEditBike } from "./AdminEditBike";
 
 class AllProducts extends Component {
   constructor(props) {
@@ -44,18 +23,18 @@ class AllProducts extends Component {
     const { localStorage } = window;
     this.props.loadBikes();
     if (!localStorage.cart) {
-      localStorage.setItem('cart', JSON.stringify([]));
+      localStorage.setItem("cart", JSON.stringify([]));
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state !== prevState) {
       const { cart, total, itemQty } = this.state;
-      localStorage.setItem('cart', JSON.stringify(cart));
-      localStorage.setItem('total', JSON.stringify(total));
-      localStorage.setItem('itemQty', JSON.stringify(itemQty));
+      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem("total", JSON.stringify(total));
+      localStorage.setItem("itemQty", JSON.stringify(itemQty));
     }
-    if ((this.props.cart.length !== prevProps.cart.length && this.props.userId)) {
+    if (this.props.cart.length !== prevProps.cart.length && this.props.userId) {
       const { userId, loadCart } = this.props;
       loadCart(userId);
     }
@@ -64,6 +43,7 @@ class AllProducts extends Component {
   async UpdateCart(cartItem, prevItem) {
     const { cart, addToCart, updateCart, loadCart, userId } = this.props;
     const hasItem = cart.some((item) => item.bikeId === cartItem.bike.id);
+
 
     if (hasItem) {
       // Check if the item is already in the cart.
@@ -74,8 +54,10 @@ class AllProducts extends Component {
         bikeId: cartItem.bike.id,
         quantity: cartItem.qty,
       };
+
       await updateCart(userId, item);
       loadCart(userId);
+
     } else {
       // Otherwise, add it to the userCart.
       // It takes a quantity and a price
@@ -85,6 +67,7 @@ class AllProducts extends Component {
         price: cartItem.bike.price,
         userId,
       };
+
       addToCart(item);
     }
     this.setState((state) => {
@@ -107,11 +90,12 @@ class AllProducts extends Component {
     });
   }
 
-  deleteButton(bike) {
-    this.props.deleteBike(bike);
+  deleteButton(event) {
+    this.props.deleteBike(event.target.value);
   }
 
   render() {
+
     const { bikes, isAdmin, cart } = this.props || [];
     const { classes } = this.props;
     let cartItems = []
@@ -120,19 +104,19 @@ class AllProducts extends Component {
         cartItems.push(item)
       })
     }
+
     return (
       <div>
         <h1>All Bikes:</h1>
         {isAdmin && (
-          <Link to={'/add'}>
-            <Button variant="outlined" type="button">
-              Add New Bike
-            </Button>
+          <Link to={"/add"}>
+            <button type="button">Add New Bike</button>
           </Link>
         )}
         <div>
           {bikes ? (
             <div>
+
               <Grid container spacing={2} className={classes.spring}>
                 <Grid item xs={12}>
                   <Grid container justify="center" spacing={5}>
@@ -204,6 +188,7 @@ class AllProducts extends Component {
                   </Grid>
                 </Grid>
               </Grid>
+
             </div>
           ) : (
             <div>There are no bikes for sale yet</div>
@@ -230,7 +215,4 @@ const mapDispatch = (dispatch) => {
     deleteBike: (id) => dispatch(deleteSingleBike(id)),
   };
 };
-export default compose(
-  withStyles(styles),
-  connect(mapState, mapDispatch)
-)(AllProducts);
+export default connect(mapState, mapDispatch)(AllProducts);

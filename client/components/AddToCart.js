@@ -9,12 +9,14 @@ import { styles } from '../../public/styles';
 class AddToCart extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       bike: {},
-      qty: props.bikeQty,
+      qty: 0,
     };
     this.AddToCart = this.AddToCart.bind(this);
   }
+
 
   AddToCart(bike) {
     // Set data to localState, individual for each item.
@@ -35,21 +37,13 @@ class AddToCart extends Component {
   }
 
   render() {
-    const { bike, classes } = this.props;
+    const { bike } = this.props;
     return (
       <div className="add-to-cart">
-        <Button
-          className={classes.btn}
-          variant="contained"
-          color="primary"
-          type="button"
-          onClick={() => this.AddToCart(bike)}
-        >
-          ADD
-        </Button>
+        <button type="button" onClick={() => this.AddToCart(bike)}>
+          ADD TO CART
+        </button>
       </div>
     );
   }
 }
-
-export default withStyles(styles)(AddToCart);
