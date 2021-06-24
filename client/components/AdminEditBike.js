@@ -43,7 +43,6 @@ export class AdminEditBike extends Component {
   }
 
   render() {
-    console.log('HI');
     const { isAdmin, classes } = this.props;
     const { model, price, description } = this.state;
     const { handleChange, handleSubmit } = this;
@@ -121,7 +120,7 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default compose("hi"
+export default compose(
   withStyles(styles),
   connect(mapState, mapDispatch)
 )(AdminEditBike);

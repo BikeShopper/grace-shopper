@@ -112,7 +112,7 @@ const mapDispatch = (dispatch) => {
     createBike: (bike) => dispatch(createSingleBike(bike)),
   };
 };
-export default compose(
+export default compose('hi'
   withStyles(styles),
   connect(null, mapDispatch)
 )(AdminAddNewBike);
