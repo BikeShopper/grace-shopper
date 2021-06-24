@@ -58,7 +58,7 @@ router.post("/", async (req, res, next) => {
     };
     
     const newBike = await CartItems.create(newCartItem);
-    const cartItem = {bikeId: newBike.id, bikeQty: newBike.quantity};
+    const cartItem = {bikeId: newBike.bikeId, bikeQty: newBike.quantity};
 
     res.json(cartItem);
   } catch (error) {

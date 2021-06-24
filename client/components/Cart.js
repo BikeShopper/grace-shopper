@@ -51,10 +51,8 @@ class Cart extends Component {
         }
     })
 
-    const bikeIds = []
-    cart.forEach(item => bikeIds.push(item.bikeId))
-
-    console.log("Bike IDS", bikeIds)
+    //const bikeIds = []
+    //cart.forEach(item => bikeIds.push(item.bikeId))
 
     return (
       <div id="cart-container">
