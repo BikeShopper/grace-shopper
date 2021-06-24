@@ -106,13 +106,12 @@ export class AdminAddNewBike extends Component {
     );
   }
 }
-
 const mapDispatch = (dispatch) => {
   return {
     createBike: (bike) => dispatch(createSingleBike(bike)),
   };
 };
-export default compose('hi'
+export default compose(
   withStyles(styles),
   connect(null, mapDispatch)
 )(AdminAddNewBike);

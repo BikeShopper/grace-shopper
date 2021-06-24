@@ -9,12 +9,14 @@ import { styles } from '../../public/styles';
 class AddToCart extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       bike: {},
-      qty: props.bikeQty,
+      qty: 0,
     };
     this.AddToCart = this.AddToCart.bind(this);
   }
+
 
   AddToCart(bike) {
     // Set data to localState, individual for each item.
@@ -51,5 +53,4 @@ class AddToCart extends Component {
     );
   }
 }
-
-export default withStyles( 'hi' styles)(AddToCart);
+export default withStyles(styles)(AddToCart);

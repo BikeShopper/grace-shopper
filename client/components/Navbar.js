@@ -44,6 +44,7 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin }) => {
                 </a>
                 <Link to="/bikes">Bikes</Link>
                 {isAdmin && <Link to="/admin">Users</Link>}
+                <Link to="/cart">Cart</Link>
               </div>
             </AppBar>
           </React.Fragment>
@@ -55,6 +56,7 @@ const Navbar = ({ handleClick, isLoggedIn, isAdmin }) => {
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
               <Link to="/bikes">Bikes</Link>
+              <Link to="/cart">Cart</Link>
             </div>
           </React.Fragment>
         )}

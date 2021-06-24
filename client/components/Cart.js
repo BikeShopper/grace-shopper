@@ -63,7 +63,7 @@ class Cart extends Component {
           {(cart[0]) ? (
             cartBikes.map((bike) => {
               return (
-                <div className="bike-container" key={bike.item.id}>
+                <div className="bike-cr" key={bike.item.id}>
                   <div>
                     <img src={bike.item.imageURL} />
                     <h3>{bike.item.model}</h3>

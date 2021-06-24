@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { authenticate } from '../store';
-import { Button, CssBaseline } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import useStyles from '../../public/styles';
 /**
  * COMPONENT
