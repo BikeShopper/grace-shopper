@@ -28,8 +28,6 @@ import {
 import { styles } from "../../public/styles";
 import { AdminEditBike } from "./AdminEditBike";
 
-console.log("Hello World");
-
 class AllProducts extends Component {
   constructor(props) {
     super(props);
@@ -67,6 +65,7 @@ class AllProducts extends Component {
     const { cart, addToCart, updateCart, loadCart, userId } = this.props;
     const hasItem = cart.some((item) => item.bikeId === cartItem.bike.id);
 
+
     if (hasItem) {
       // Check if the item is already in the cart.
       // If it is, perform an update to the cart
@@ -76,8 +75,10 @@ class AllProducts extends Component {
         bikeId: cartItem.bike.id,
         quantity: cartItem.qty,
       };
+
       await updateCart(userId, item);
       loadCart(userId);
+
     } else {
       // Otherwise, add it to the userCart.
       // It takes a quantity and a price
@@ -87,6 +88,7 @@ class AllProducts extends Component {
         price: cartItem.bike.price,
         userId,
       };
+
       addToCart(item);
     }
     this.setState((state) => {
@@ -109,11 +111,12 @@ class AllProducts extends Component {
     });
   }
 
-  deleteButton(bike) {
-    this.props.deleteBike(bike);
+  deleteButton(event) {
+    this.props.deleteBike(event.target.value);
   }
 
   render() {
+
     const { bikes, isAdmin, cart } = this.props || [];
     const { classes } = this.props;
     let cartItems = [];
@@ -122,6 +125,7 @@ class AllProducts extends Component {
         cartItems.push(item);
       });
     }
+
     return (
       <div>
         <h1>All Bikes:</h1>
@@ -135,6 +139,7 @@ class AllProducts extends Component {
         <div>
           {bikes ? (
             <div>
+
               <Grid container spacing={2} className={classes.spring}>
                 <Grid item xs={12}>
                   <Grid container justify="center" spacing={5}>
@@ -210,6 +215,7 @@ class AllProducts extends Component {
                   </Grid>
                 </Grid>
               </Grid>
+
             </div>
           ) : (
             <div>There are no bikes for sale yet</div>
@@ -236,7 +242,4 @@ const mapDispatch = (dispatch) => {
     deleteBike: (id) => dispatch(deleteSingleBike(id)),
   };
 };
-export default compose(
-  withStyles(styles),
-  connect(mapState, mapDispatch)
-)(AllProducts);
+export default connect(mapState, mapDispatch)(AllProducts);

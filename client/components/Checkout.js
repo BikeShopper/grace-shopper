@@ -55,11 +55,11 @@ class Checkout extends React.Component {
           alue={this.state.address}
           onChange={(e) => this.handleInput(e)}
         ></input>
-        <label>Credit Card</label>
+        <label>Credit Cart</label>
         <input
           type="text"
-          name="creditCard"
-          alue={this.state.creditCard}
+          name="creditCart"
+          alue={this.state.creditCart}
           onChange={(e) => this.handleInput(e)}
         ></input>
         <label>Expiration</label>
