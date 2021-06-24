@@ -1,9 +1,12 @@
 // The button shall make a POST request to the User Cart
 // PENDING: Check why, after onClick, componentDidUpdate runs multiple times
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
+import { styles } from '../../public/styles';
 
-export default class AddToCart extends Component {
+class AddToCart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +15,6 @@ export default class AddToCart extends Component {
     };
     this.AddToCart = this.AddToCart.bind(this);
   }
-
 
   AddToCart(bike) {
     // Set data to localState, individual for each item.
@@ -33,13 +35,21 @@ export default class AddToCart extends Component {
   }
 
   render() {
-    const { bike } = this.props;
+    const { bike, classes } = this.props;
     return (
       <div className="add-to-cart">
-        <button type="button" onClick={() => this.AddToCart(bike)}>
-          ADD TO CART
-        </button>
+        <Button
+          className={classes.btn}
+          variant="contained"
+          color="primary"
+          type="button"
+          onClick={() => this.AddToCart(bike)}
+        >
+          ADD
+        </Button>
       </div>
     );
   }
 }
+
+export default withStyles(styles)(AddToCart);
