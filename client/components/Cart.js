@@ -43,11 +43,18 @@ class Cart extends Component {
   render() {
     const { cart, bikes } = this.props || [];
     let cartBikes = []
-    if (bikes.length > 0) {
-        cart.forEach(item => {
-            cartBikes = bikes.filter(bike => bike.id === item.bikeId)
-        })
-    }
+    cart.forEach(item => {
+        for (const bike of bikes) {
+            if (bike.id === item.bikeId) {
+                cartBikes.push({item: bike, bikeQty: item.bikeQty})
+            }
+        }
+    })
+
+    const bikeIds = []
+    cart.forEach(item => bikeIds.push(item.bikeId))
+
+    console.log("Bike IDS", bikeIds)
 
     return (
       <div id="cart-container">
@@ -55,14 +62,14 @@ class Cart extends Component {
           <h2>Your Cart</h2>
         </nav>
         <section id="cart">
-          {(cart[0] && cartBikes[0]) ? (
+          {(cart[0]) ? (
             cartBikes.map((bike) => {
               return (
-                <div className="bike-container" key={bike.id}>
+                <div className="bike-container" key={bike.item.id}>
                   <div>
-                    <img src={bike.imageURL} />
-                    <h3>{bike.model}</h3>
-                    <p>Quantity: {this.state[bike.id]}</p>
+                    <img src={bike.item.imageURL} />
+                    <h3>{bike.item.model}</h3>
+                    <p>Quantity: {bike.bikeQty}</p>
                   </div>
                 </div>
               );
