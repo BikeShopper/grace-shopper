@@ -121,7 +121,7 @@ const mapDispatch = (dispatch) => {
   };
 };
 
-export default compose(
+export default compose("hi"
   withStyles(styles),
   connect(mapState, mapDispatch)
 )(AdminEditBike);
