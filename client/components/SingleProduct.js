@@ -9,9 +9,9 @@ export class SingleProduct extends React.Component {
   render() {
     const bike = this.props.bike;
     return bike ? (
-      <div className="bike-container">
+      <div className="bike-cr">
         <h1>{bike.model}</h1>
-        <img src={bike.imageURL}/>
+        <img src={bike.imageURL} />
         <h2>{bike.year}</h2>
         <p>{bike.description}</p>
         <h1>{bike.price}</h1>

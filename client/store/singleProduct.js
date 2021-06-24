@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import history from '../history';
 
 // Action Types
 const SET_SINGLE_BIKE = 'SET_SINGLE_BIKE';
@@ -36,6 +37,7 @@ export const updateSingleBike = (id, bike) => async (dispatch) => {
       },
     });
     dispatch(updateBike(updatedBike));
+    history.push('/bikes');
   } catch (error) {
     console.error(error);
   }
