@@ -55,19 +55,17 @@ class AllProducts extends Component {
       localStorage.setItem('total', JSON.stringify(total));
       localStorage.setItem('itemQty', JSON.stringify(itemQty));
     }
-    if ((this.props.cart.length !== prevProps.cart.length && this.props.userId)) {
+    if (this.props.cart.length !== prevProps.cart.length && this.props.userId) {
       const { userId, loadCart } = this.props;
       loadCart(userId);
       console.log(this.props);
     }
   }
 
-
-  async UpdateCart(cartItem, prevItem) {
-    const { cart, addToCart, updateCart, loadCart, userId } = this.props;
-    const hasItem = cart.some((item) => item.bikeId === cartItem.bike.id);
-    console.log("hasItem var", hasItem);
-
+  UpdateCart(cartItem, prevItem) {
+    const { cart, addToCart, updateCart, userId } = this.props;
+    const hasItem = cart.some((item) => item.id === cartItem.bike.id);
+    console.log('hasItem var', hasItem);
 
     if (hasItem) {
       // Check if the item is already in the cart.
@@ -78,11 +76,8 @@ class AllProducts extends Component {
         bikeId: cartItem.bike.id,
         quantity: cartItem.qty,
       };
-
-      console.log("UPDATE", cartItem.qty);
-      await updateCart(userId, item);
-      loadCart(userId);
-
+      console.log('UPDATE', cartItem.qty);
+      updateCart(userId, item, cartItem.bike);
     } else {
       // Otherwise, add it to the userCart.
       // It takes a quantity and a price
@@ -120,19 +115,8 @@ class AllProducts extends Component {
   }
 
   render() {
-
-    const { bikes, isAdmin, cart } = this.props || [];
-    let cartItems = []
-    if (cart[0]) {
-      cart.forEach(item => {
-        cartItems.push(item)
-      })
-    }
-    let quantity = 0;
-
-
+    const { bikes, isAdmin } = this.props || [];
     const { classes } = this.props;
-
     return (
       <div>
         <h1>All Bikes:</h1>
@@ -150,17 +134,6 @@ class AllProducts extends Component {
                 <Grid item xs={12}>
                   <Grid container justify="center" spacing={5}>
                     {bikes.map((bike) => (
-                       if (cart.length > 0) {
-                  console.log("Condition met, cart not empty");
-                  for (const item of cart) {
-                    console.log("Check cart Item", item);
-                    if (item.bikeId === bike.id) {
-                      quantity = item.bikeQty;
-                    } else {
-                      quantity = 0
-                    }
-                  }
-                }
                       <Grid item className="bike-cr" key={bike.id}>
                         <Card className={classes.bikeBox}>
                           <CardActionArea
@@ -181,7 +154,7 @@ class AllProducts extends Component {
                             </Link>
                           </CardActionArea>
                           {/* <CardActions> */}
-                           <AddToCart bike={bike} UpdateCart={this.UpdateCart} bikeQty={quantity}/>
+                          <AddToCart bike={bike} UpdateCart={this.UpdateCart} />
                           {isAdmin && (
                             <div>
                               <Link to={`/bikes/${bike.id}/edit`}>
